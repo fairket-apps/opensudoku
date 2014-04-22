@@ -1,6 +1,6 @@
 package cz.romario.opensudoku.gui.importing;
 
-import com.silo.app.opensudoku.R;
+import com.fairket.app.opensudoku.R;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;

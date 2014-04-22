@@ -26,7 +26,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.silo.app.opensudoku.R;
+import com.fairket.app.opensudoku.R;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.LightingColorFilter;

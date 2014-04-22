@@ -25,7 +25,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.silo.app.opensudoku.R;
+import com.fairket.app.opensudoku.R;
 
 import cz.romario.opensudoku.game.SudokuGame;
 

@@ -25,7 +25,7 @@ import java.util.List;
 
 import android.content.Context;
 
-import com.silo.app.opensudoku.R;
+import com.fairket.app.opensudoku.R;
 
 import cz.romario.opensudoku.utils.StringUtils;
 

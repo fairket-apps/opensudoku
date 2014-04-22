@@ -20,7 +20,7 @@
 
 package cz.romario.opensudoku.game;
 
-import com.silo.app.opensudoku.R;
+import com.fairket.app.opensudoku.R;
 import android.content.Context;
 
 /**

@@ -33,7 +33,7 @@ import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
 
-import com.silo.app.opensudoku.R;
+import com.fairket.app.opensudoku.R;
 
 public class HintsQueue {
 	// TODO: should be persisted in activity's state

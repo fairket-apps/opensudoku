@@ -22,7 +22,7 @@ package cz.romario.opensudoku.gui.inputmethod;
 
 import java.util.Map;
 
-import com.silo.app.opensudoku.R;
+import com.fairket.app.opensudoku.R;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;

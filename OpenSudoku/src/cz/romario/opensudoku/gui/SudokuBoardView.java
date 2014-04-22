@@ -32,7 +32,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.silo.app.opensudoku.R;
+import com.fairket.app.opensudoku.R;
 
 import cz.romario.opensudoku.game.Cell;
 import cz.romario.opensudoku.game.CellCollection;

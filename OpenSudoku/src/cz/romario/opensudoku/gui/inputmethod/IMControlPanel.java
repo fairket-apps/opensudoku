@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.silo.app.opensudoku.R;
+import com.fairket.app.opensudoku.R;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;

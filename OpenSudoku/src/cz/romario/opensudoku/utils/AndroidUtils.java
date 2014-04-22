@@ -2,7 +2,7 @@ package cz.romario.opensudoku.utils;
 
 import java.util.List;
 
-import com.silo.app.opensudoku.R;
+import com.fairket.app.opensudoku.R;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;

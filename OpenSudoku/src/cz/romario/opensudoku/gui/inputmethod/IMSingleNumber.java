@@ -23,7 +23,7 @@ package cz.romario.opensudoku.gui.inputmethod;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.silo.app.opensudoku.R;
+import com.fairket.app.opensudoku.R;
 import android.content.Context;
 import android.graphics.LightingColorFilter;
 import android.os.Handler;
