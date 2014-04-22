@@ -2,14 +2,13 @@ package cz.romario.opensudoku.utils;
 
 import java.util.List;
 
-import cz.romario.opensudoku.R;
-
+import com.silo.app.opensudoku.R;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.ResolveInfo;
 import android.preference.PreferenceManager;
 
 public class AndroidUtils {

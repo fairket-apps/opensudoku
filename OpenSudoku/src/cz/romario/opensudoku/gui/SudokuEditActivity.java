@@ -33,7 +33,11 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
-import cz.romario.opensudoku.R;
+
+import com.silo.app.opensudoku.R;
+import com.fairket.sdk.android.FairketApiClient;
+import com.fairket.sdk.android.FairketHelperForGingerbread;
+
 import cz.romario.opensudoku.db.SudokuDatabase;
 import cz.romario.opensudoku.game.SudokuGame;
 import cz.romario.opensudoku.gui.inputmethod.IMControlPanel;
@@ -42,13 +46,14 @@ import cz.romario.opensudoku.utils.AndroidUtils;
 
 /**
  * Activity for editing content of puzzle.
- *
+ * 
  * @author romario
  */
 public class SudokuEditActivity extends Activity {
 
 	/**
-	 * When inserting new data, I need to know folder in which will new sudoku be stored.
+	 * When inserting new data, I need to know folder in which will new sudoku
+	 * be stored.
 	 */
 	public static final String EXTRA_FOLDER_ID = "folder_id";
 	public static final String EXTRA_SUDOKU_ID = "sudoku_id";
@@ -75,6 +80,7 @@ public class SudokuEditActivity extends Activity {
 	private Handler mGuiHandler;
 
 	private boolean mFullScreen;
+	private FairketApiClient mFairket;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +116,8 @@ public class SudokuEditActivity extends Activity {
 			if (intent.hasExtra(EXTRA_SUDOKU_ID)) {
 				mSudokuID = intent.getLongExtra(EXTRA_SUDOKU_ID, 0);
 			} else {
-				throw new IllegalArgumentException(String.format("Extra with key '%s' is required.", EXTRA_SUDOKU_ID));
+				throw new IllegalArgumentException(String.format(
+						"Extra with key '%s' is required.", EXTRA_SUDOKU_ID));
 			}
 		} else if (Intent.ACTION_INSERT.equals(action)) {
 			mState = STATE_INSERT;
@@ -119,11 +126,12 @@ public class SudokuEditActivity extends Activity {
 			if (intent.hasExtra(EXTRA_FOLDER_ID)) {
 				mFolderID = intent.getLongExtra(EXTRA_FOLDER_ID, 0);
 			} else {
-				throw new IllegalArgumentException(String.format("Extra with key '%s' is required.", EXTRA_FOLDER_ID));
+				throw new IllegalArgumentException(String.format(
+						"Extra with key '%s' is required.", EXTRA_FOLDER_ID));
 			}
 
 		} else {
-			// Whoops, unknown action!  Bail.
+			// Whoops, unknown action! Bail.
 			Log.e(TAG, "Unknown action, exiting.");
 			finish();
 			return;
@@ -150,8 +158,18 @@ public class SudokuEditActivity extends Activity {
 		for (InputMethod im : mInputMethods.getInputMethods()) {
 			im.setEnabled(false);
 		}
-		mInputMethods.getInputMethod(IMControlPanel.INPUT_METHOD_NUMPAD).setEnabled(true);
+		mInputMethods.getInputMethod(IMControlPanel.INPUT_METHOD_NUMPAD)
+				.setEnabled(true);
 		mInputMethods.activateInputMethod(IMControlPanel.INPUT_METHOD_NUMPAD);
+		// FairketApiClient Integration
+		mFairket = FairketHelperForGingerbread.onCreate(this, FolderListActivity.FAIRKET_APP_PUB_KEY, FolderListActivity.FAIRKET_LOG);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		FairketHelperForGingerbread.onResume(mFairket);
 	}
 
 	@Override
@@ -159,13 +177,17 @@ public class SudokuEditActivity extends Activity {
 		super.onWindowFocusChanged(hasFocus);
 
 		if (hasFocus) {
-			// FIXME: When activity is resumed, title isn't sometimes hidden properly (there is black 
-			// empty space at the top of the screen). This is desperate workaround.
+			// FIXME: When activity is resumed, title isn't sometimes hidden
+			// properly (there is black
+			// empty space at the top of the screen). This is desperate
+			// workaround.
 			if (mFullScreen) {
 				mGuiHandler.postDelayed(new Runnable() {
 					@Override
 					public void run() {
-						getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+						getWindow()
+								.clearFlags(
+										WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 						mRootLayout.requestLayout();
 					}
 				}, 1000);
@@ -174,20 +196,23 @@ public class SudokuEditActivity extends Activity {
 		}
 	}
 
-
 	@Override
 	protected void onPause() {
 		super.onPause();
 
-		if (isFinishing() && mState != STATE_CANCEL && !mGame.getCells().isEmpty()) {
+		if (isFinishing() && mState != STATE_CANCEL
+				&& !mGame.getCells().isEmpty()) {
 			savePuzzle();
 		}
+
+		FairketHelperForGingerbread.onPause(mFairket);
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		mDatabase.close();
+		FairketHelperForGingerbread.onDestroy(mFairket);
 	}
 
 	@Override
@@ -201,21 +226,21 @@ public class SudokuEditActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// This is our one standard application action -- inserting a
 		// new note into the list.
-		menu.add(0, MENU_ITEM_SAVE, 0, R.string.save)
-				.setShortcut('1', 's')
+		menu.add(0, MENU_ITEM_SAVE, 0, R.string.save).setShortcut('1', 's')
 				.setIcon(android.R.drawable.ic_menu_save);
 		menu.add(0, MENU_ITEM_CANCEL, 1, android.R.string.cancel)
 				.setShortcut('3', 'c')
 				.setIcon(android.R.drawable.ic_menu_close_clear_cancel);
 
 		// Generate any additional actions that can be performed on the
-		// overall list.  In a normal install, there are no additional
+		// overall list. In a normal install, there are no additional
 		// actions found here, but this allows other applications to extend
 		// our menu with their own actions.
 		Intent intent = new Intent(null, getIntent().getData());
 		intent.addCategory(Intent.CATEGORY_ALTERNATIVE);
 		menu.addIntentOptions(Menu.CATEGORY_ALTERNATIVE, 0, 0,
-				new ComponentName(this, SudokuEditActivity.class), null, intent, 0, null);
+				new ComponentName(this, SudokuEditActivity.class), null,
+				intent, 0, null);
 
 		return true;
 	}
@@ -223,14 +248,14 @@ public class SudokuEditActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case MENU_ITEM_SAVE:
-				// do nothing, puzzle will be saved automatically in onPause
-				finish();
-				return true;
-			case MENU_ITEM_CANCEL:
-				mState = STATE_CANCEL;
-				finish();
-				return true;
+		case MENU_ITEM_SAVE:
+			// do nothing, puzzle will be saved automatically in onPause
+			finish();
+			return true;
+		case MENU_ITEM_CANCEL:
+			mState = STATE_CANCEL;
+			finish();
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -239,15 +264,17 @@ public class SudokuEditActivity extends Activity {
 		mGame.getCells().markFilledCellsAsNotEditable();
 
 		switch (mState) {
-			case STATE_EDIT:
-				mDatabase.updateSudoku(mGame);
-				Toast.makeText(getApplicationContext(), R.string.puzzle_updated, Toast.LENGTH_SHORT).show();
-				break;
-			case STATE_INSERT:
-				mGame.setCreated(System.currentTimeMillis());
-				mDatabase.insertSudoku(mFolderID, mGame);
-				Toast.makeText(getApplicationContext(), R.string.puzzle_inserted, Toast.LENGTH_SHORT).show();
-				break;
+		case STATE_EDIT:
+			mDatabase.updateSudoku(mGame);
+			Toast.makeText(getApplicationContext(), R.string.puzzle_updated,
+					Toast.LENGTH_SHORT).show();
+			break;
+		case STATE_INSERT:
+			mGame.setCreated(System.currentTimeMillis());
+			mDatabase.insertSudoku(mFolderID, mGame);
+			Toast.makeText(getApplicationContext(), R.string.puzzle_inserted,
+					Toast.LENGTH_SHORT).show();
+			break;
 		}
 	}
 }

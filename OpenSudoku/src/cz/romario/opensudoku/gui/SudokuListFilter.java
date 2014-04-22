@@ -25,7 +25,8 @@ import java.util.List;
 
 import android.content.Context;
 
-import cz.romario.opensudoku.R;
+import com.silo.app.opensudoku.R;
+
 import cz.romario.opensudoku.utils.StringUtils;
 
 public class SudokuListFilter {

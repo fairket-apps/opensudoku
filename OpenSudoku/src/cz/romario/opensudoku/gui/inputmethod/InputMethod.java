@@ -20,12 +20,12 @@
 
 package cz.romario.opensudoku.gui.inputmethod;
 
+import com.silo.app.opensudoku.R;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.view.View;
 import android.widget.Button;
-import cz.romario.opensudoku.R;
 import cz.romario.opensudoku.game.Cell;
 import cz.romario.opensudoku.game.SudokuGame;
 import cz.romario.opensudoku.gui.HintsQueue;

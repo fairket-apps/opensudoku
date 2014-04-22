@@ -22,12 +22,6 @@ package cz.romario.opensudoku.gui;
 
 import java.util.Collection;
 
-import cz.romario.opensudoku.R;
-import cz.romario.opensudoku.game.Cell;
-import cz.romario.opensudoku.game.CellCollection;
-import cz.romario.opensudoku.game.CellNote;
-import cz.romario.opensudoku.game.SudokuGame;
-import cz.romario.opensudoku.game.CellCollection.OnChangeListener;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -37,6 +31,14 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.silo.app.opensudoku.R;
+
+import cz.romario.opensudoku.game.Cell;
+import cz.romario.opensudoku.game.CellCollection;
+import cz.romario.opensudoku.game.CellCollection.OnChangeListener;
+import cz.romario.opensudoku.game.CellNote;
+import cz.romario.opensudoku.game.SudokuGame;
 
 /**
  * Sudoku board widget.

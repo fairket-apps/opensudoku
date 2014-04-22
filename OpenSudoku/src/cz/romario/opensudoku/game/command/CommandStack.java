@@ -2,9 +2,8 @@ package cz.romario.opensudoku.game.command;
 
 import java.util.Stack;
 
-import cz.romario.opensudoku.game.CellCollection;
-
 import android.os.Bundle;
+import cz.romario.opensudoku.game.CellCollection;
 
 public class CommandStack {
 	private Stack<AbstractCommand> mCommandStack = new Stack<AbstractCommand>();

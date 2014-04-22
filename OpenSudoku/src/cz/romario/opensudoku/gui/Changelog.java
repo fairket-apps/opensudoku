@@ -11,7 +11,9 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
 import android.webkit.WebView;
-import cz.romario.opensudoku.R;
+
+import com.silo.app.opensudoku.R;
+
 import cz.romario.opensudoku.utils.AndroidUtils;
 
 public class Changelog {

@@ -35,7 +35,8 @@ import android.view.ViewParent;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import cz.romario.opensudoku.R;
+
+import com.silo.app.opensudoku.R;
 
 /**
  * A {@link Preference} that allows for integer

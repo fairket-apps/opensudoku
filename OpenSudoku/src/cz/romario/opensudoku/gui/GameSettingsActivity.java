@@ -20,20 +20,56 @@
 
 package cz.romario.opensudoku.gui;
 
-import cz.romario.opensudoku.R;
 import android.os.Bundle;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceChangeListener;
+import android.preference.PreferenceActivity;
+
+import com.silo.app.opensudoku.R;
+import com.fairket.sdk.android.FairketApiClient;
+import com.fairket.sdk.android.FairketHelperForGingerbread;
 
 public class GameSettingsActivity extends PreferenceActivity {
+
+	private FairketApiClient mFairket;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		addPreferencesFromResource(R.xml.game_settings);
 
-		findPreference("show_hints").setOnPreferenceChangeListener(mShowHintsChanged);
+		findPreference("show_hints").setOnPreferenceChangeListener(
+				mShowHintsChanged);
+		// FairketApiClient Integration
+		mFairket = FairketHelperForGingerbread.onCreate(this, FolderListActivity.FAIRKET_APP_PUB_KEY, FolderListActivity.FAIRKET_LOG);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		FairketHelperForGingerbread.onResume(mFairket);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		FairketHelperForGingerbread.onPause(mFairket);
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+
+		FairketHelperForGingerbread.onDestroy(mFairket);
+
 	}
 
 	private OnPreferenceChangeListener mShowHintsChanged = new OnPreferenceChangeListener() {

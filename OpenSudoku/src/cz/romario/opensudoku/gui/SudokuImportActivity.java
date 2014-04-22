@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.widget.ProgressBar;
-import cz.romario.opensudoku.R;
+
+import com.silo.app.opensudoku.R;
+
 import cz.romario.opensudoku.gui.importing.AbstractImportTask;
+import cz.romario.opensudoku.gui.importing.AbstractImportTask.OnImportFinishedListener;
 import cz.romario.opensudoku.gui.importing.ExtrasImportTask;
 import cz.romario.opensudoku.gui.importing.OpenSudokuImportTask;
 import cz.romario.opensudoku.gui.importing.SdmImportTask;
-import cz.romario.opensudoku.gui.importing.AbstractImportTask.OnImportFinishedListener;
 import cz.romario.opensudoku.utils.Const;
 
 /**

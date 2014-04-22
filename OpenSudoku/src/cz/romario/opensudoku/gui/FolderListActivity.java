@@ -43,7 +43,11 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 import android.widget.TextView;
-import cz.romario.opensudoku.R;
+
+import com.silo.app.opensudoku.R;
+import com.fairket.sdk.android.FairketApiClient;
+import com.fairket.sdk.android.FairketHelperForGingerbread;
+
 import cz.romario.opensudoku.db.FolderColumns;
 import cz.romario.opensudoku.db.SudokuDatabase;
 import cz.romario.opensudoku.game.FolderInfo;
@@ -51,11 +55,15 @@ import cz.romario.opensudoku.gui.FolderDetailLoader.FolderDetailCallback;
 import cz.romario.opensudoku.utils.AndroidUtils;
 
 /**
- * List of puzzle's folder. This activity also serves as root activity of application.
- *
+ * List of puzzle's folder. This activity also serves as root activity of
+ * application.
+ * 
  * @author romario
  */
 public class FolderListActivity extends ListActivity {
+
+	public static final String FAIRKET_LOG = "SUDOKU-FairketApiClient";
+	public static final String FAIRKET_APP_PUB_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtWmeNrS8kH+DJoS0ndsBBoPQrlchF+j2SlWkGShFMGXG/sza2f1K23EyLmX8lWtJsZ0MocvL1HMCEm63wEuuC3tqnZYJVFyIDVHxSJEaMaytlZi3N1JxjxGQzYNuse3hGDAgdINJxnclpd0rrY+WgYX2Uap4NwS9dONCxLzFfuGw0pYR1bU6NVVl74BKYAku/yUmlTC9JlrF0Kx3xLgv7MhSduq27Nqlem9Uy2plMEYcxC6vuMlW4JLynDawwsx+LvyaipF/C1c2dbYjrPZqQr2b9LWX8vacee4kcT0RkSoGZnwtV/PgKu5rfN/I/dZNHSfJs+XBhfTyOp8NivUMiQIDAQAB";
 
 	public static final int MENU_ITEM_ADD = Menu.FIRST;
 	public static final int MENU_ITEM_RENAME = Menu.FIRST + 1;
@@ -82,6 +90,8 @@ public class FolderListActivity extends ListActivity {
 	private long mRenameFolderID;
 	private long mDeleteFolderID;
 
+	private FairketApiClient mFairket;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -96,7 +106,9 @@ public class FolderListActivity extends ListActivity {
 		getMorePuzzles.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://code.google.com/p/opensudoku-android/wiki/Puzzles"));
+				Intent intent = new Intent(
+						Intent.ACTION_VIEW,
+						Uri.parse("http://code.google.com/p/opensudoku-android/wiki/Puzzles"));
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(intent);
 			}
@@ -105,9 +117,10 @@ public class FolderListActivity extends ListActivity {
 		mDatabase = new SudokuDatabase(getApplicationContext());
 		mCursor = mDatabase.getFolderList();
 		startManagingCursor(mCursor);
-		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.folder_list_item,
-				mCursor, new String[]{FolderColumns.NAME, FolderColumns._ID},
-				new int[]{R.id.name, R.id.detail});
+		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
+				R.layout.folder_list_item, mCursor, new String[] {
+						FolderColumns.NAME, FolderColumns._ID }, new int[] {
+						R.id.name, R.id.detail });
 		mFolderListBinder = new FolderListViewBinder(this);
 		adapter.setViewBinder(mFolderListBinder);
 
@@ -116,6 +129,12 @@ public class FolderListActivity extends ListActivity {
 		// show changelog on first run
 		Changelog changelog = new Changelog(this);
 		changelog.showOnFirstRun();
+
+		// FairketApiClient Integration
+		mFairket = FairketHelperForGingerbread.onCreate(this,
+				FolderListActivity.FAIRKET_APP_PUB_KEY,
+				FolderListActivity.FAIRKET_LOG);
+
 	}
 
 	@Override
@@ -126,10 +145,27 @@ public class FolderListActivity extends ListActivity {
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+
+		FairketHelperForGingerbread.onResume(mFairket);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		FairketHelperForGingerbread.onPause(mFairket);
+	}
+
+	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		mDatabase.close();
 		mFolderListBinder.destroy();
+
+		FairketHelperForGingerbread.onDestroy(mFairket);
+
 	}
 
 	@Override
@@ -155,34 +191,33 @@ public class FolderListActivity extends ListActivity {
 		// This is our one standard application action -- inserting a
 		// new note into the list.
 		menu.add(0, MENU_ITEM_ADD, 0, R.string.add_folder)
-				.setShortcut('3', 'a')
-				.setIcon(android.R.drawable.ic_menu_add);
+				.setShortcut('3', 'a').setIcon(android.R.drawable.ic_menu_add);
 		menu.add(0, MENU_ITEM_IMPORT, 0, R.string.import_file)
 				.setShortcut('8', 'i')
 				.setIcon(android.R.drawable.ic_menu_upload);
 		menu.add(0, MENU_ITEM_EXPORT_ALL, 1, R.string.export_all_folders)
 				.setShortcut('7', 'e')
 				.setIcon(android.R.drawable.ic_menu_share);
-		menu.add(0, MENU_ITEM_ABOUT, 2, R.string.about)
-				.setShortcut('1', 'h')
+		menu.add(0, MENU_ITEM_ABOUT, 2, R.string.about).setShortcut('1', 'h')
 				.setIcon(android.R.drawable.ic_menu_info_details);
 
-
 		// Generate any additional actions that can be performed on the
-		// overall list.  In a normal install, there are no additional
+		// overall list. In a normal install, there are no additional
 		// actions found here, but this allows other applications to extend
 		// our menu with their own actions.
 		Intent intent = new Intent(null, getIntent().getData());
 		intent.addCategory(Intent.CATEGORY_ALTERNATIVE);
 		menu.addIntentOptions(Menu.CATEGORY_ALTERNATIVE, 0, 0,
-				new ComponentName(this, FolderListActivity.class), null, intent, 0, null);
+				new ComponentName(this, FolderListActivity.class), null,
+				intent, 0, null);
 
 		return true;
 
 	}
 
 	@Override
-	public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
+	public void onCreateContextMenu(ContextMenu menu, View view,
+			ContextMenuInfo menuInfo) {
 		AdapterView.AdapterContextMenuInfo info;
 		try {
 			info = (AdapterView.AdapterContextMenuInfo) menuInfo;
@@ -196,7 +231,8 @@ public class FolderListActivity extends ListActivity {
 			// For some reason the requested item isn't available, do nothing
 			return;
 		}
-		menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(FolderColumns.NAME)));
+		menu.setHeaderTitle(cursor.getString(cursor
+				.getColumnIndex(FolderColumns.NAME)));
 
 		menu.add(0, MENU_ITEM_EXPORT, 0, R.string.export_folder);
 		menu.add(0, MENU_ITEM_RENAME, 1, R.string.rename_folder);
@@ -208,63 +244,73 @@ public class FolderListActivity extends ListActivity {
 		LayoutInflater factory = LayoutInflater.from(this);
 
 		switch (id) {
-			case DIALOG_ABOUT:
-				final View aboutView = factory.inflate(R.layout.about, null);
-				TextView versionLabel = (TextView) aboutView.findViewById(R.id.version_label);
-				String versionName = AndroidUtils.getAppVersionName(getApplicationContext());
-				versionLabel.setText(getString(R.string.version, versionName));
-				return new AlertDialog.Builder(this)
-						.setIcon(R.drawable.opensudoku_logo_72)
-						.setTitle(R.string.app_name)
-						.setView(aboutView)
-						.setPositiveButton("OK", null)
-						.create();
-			case DIALOG_ADD_FOLDER:
-				View addFolderView = factory.inflate(R.layout.folder_name, null);
-				mAddFolderNameInput = (TextView) addFolderView.findViewById(R.id.name);
-				return new AlertDialog.Builder(this)
-						.setIcon(android.R.drawable.ic_menu_add)
-						.setTitle(R.string.add_folder)
-						.setView(addFolderView)
-						.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int whichButton) {
-								mDatabase.insertFolder(mAddFolderNameInput.getText().toString().trim(), System.currentTimeMillis());
-								updateList();
-							}
-						})
-						.setNegativeButton(android.R.string.cancel, null)
-						.create();
-			case DIALOG_RENAME_FOLDER:
-				final View renameFolderView = factory.inflate(R.layout.folder_name, null);
-				mRenameFolderNameInput = (TextView) renameFolderView.findViewById(R.id.name);
+		case DIALOG_ABOUT:
+			final View aboutView = factory.inflate(R.layout.about, null);
+			TextView versionLabel = (TextView) aboutView
+					.findViewById(R.id.version_label);
+			String versionName = AndroidUtils
+					.getAppVersionName(getApplicationContext());
+			versionLabel.setText(getString(R.string.version, versionName));
+			return new AlertDialog.Builder(this)
+					.setIcon(R.drawable.opensudoku_logo_72)
+					.setTitle(R.string.app_name).setView(aboutView)
+					.setPositiveButton("OK", null).create();
+		case DIALOG_ADD_FOLDER:
+			View addFolderView = factory.inflate(R.layout.folder_name, null);
+			mAddFolderNameInput = (TextView) addFolderView
+					.findViewById(R.id.name);
+			return new AlertDialog.Builder(this)
+					.setIcon(android.R.drawable.ic_menu_add)
+					.setTitle(R.string.add_folder)
+					.setView(addFolderView)
+					.setPositiveButton(R.string.save,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									mDatabase.insertFolder(mAddFolderNameInput
+											.getText().toString().trim(),
+											System.currentTimeMillis());
+									updateList();
+								}
+							}).setNegativeButton(android.R.string.cancel, null)
+					.create();
+		case DIALOG_RENAME_FOLDER:
+			final View renameFolderView = factory.inflate(R.layout.folder_name,
+					null);
+			mRenameFolderNameInput = (TextView) renameFolderView
+					.findViewById(R.id.name);
 
-				return new AlertDialog.Builder(this)
-						.setIcon(android.R.drawable.ic_menu_edit)
-						.setTitle(R.string.rename_folder_title)
-						.setView(renameFolderView)
-						.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int whichButton) {
-								mDatabase.updateFolder(mRenameFolderID, mRenameFolderNameInput.getText().toString().trim());
-								updateList();
-							}
-						})
-						.setNegativeButton(android.R.string.cancel, null)
-						.create();
-			case DIALOG_DELETE_FOLDER:
-				return new AlertDialog.Builder(this)
-						.setIcon(android.R.drawable.ic_delete)
-						.setTitle(R.string.delete_folder_title)
-						.setMessage(R.string.delete_folder_confirm)
-						.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int whichButton) {
-								// TODO: this could take a while, I should show progress dialog
-								mDatabase.deleteFolder(mDeleteFolderID);
-								updateList();
-							}
-						})
-						.setNegativeButton(android.R.string.no, null)
-						.create();
-
+			return new AlertDialog.Builder(this)
+					.setIcon(android.R.drawable.ic_menu_edit)
+					.setTitle(R.string.rename_folder_title)
+					.setView(renameFolderView)
+					.setPositiveButton(R.string.save,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									mDatabase.updateFolder(mRenameFolderID,
+											mRenameFolderNameInput.getText()
+													.toString().trim());
+									updateList();
+								}
+							}).setNegativeButton(android.R.string.cancel, null)
+					.create();
+		case DIALOG_DELETE_FOLDER:
+			return new AlertDialog.Builder(this)
+					.setIcon(android.R.drawable.ic_delete)
+					.setTitle(R.string.delete_folder_title)
+					.setMessage(R.string.delete_folder_confirm)
+					.setPositiveButton(android.R.string.yes,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									// TODO: this could take a while, I should
+									// show progress dialog
+									mDatabase.deleteFolder(mDeleteFolderID);
+									updateList();
+								}
+							}).setNegativeButton(android.R.string.no, null)
+					.create();
 
 		}
 
@@ -276,21 +322,21 @@ public class FolderListActivity extends ListActivity {
 		super.onPrepareDialog(id, dialog);
 
 		switch (id) {
-			case DIALOG_ADD_FOLDER:
-				break;
-			case DIALOG_RENAME_FOLDER: {
-				FolderInfo folder = mDatabase.getFolderInfo(mRenameFolderID);
-				String folderName = folder != null ? folder.name : "";
-				dialog.setTitle(getString(R.string.rename_folder_title, folderName));
-				mRenameFolderNameInput.setText(folderName);
-				break;
-			}
-			case DIALOG_DELETE_FOLDER: {
-				FolderInfo folder = mDatabase.getFolderInfo(mDeleteFolderID);
-				String folderName = folder != null ? folder.name : "";
-				dialog.setTitle(getString(R.string.delete_folder_title, folderName));
-				break;
-			}
+		case DIALOG_ADD_FOLDER:
+			break;
+		case DIALOG_RENAME_FOLDER: {
+			FolderInfo folder = mDatabase.getFolderInfo(mRenameFolderID);
+			String folderName = folder != null ? folder.name : "";
+			dialog.setTitle(getString(R.string.rename_folder_title, folderName));
+			mRenameFolderNameInput.setText(folderName);
+			break;
+		}
+		case DIALOG_DELETE_FOLDER: {
+			FolderInfo folder = mDatabase.getFolderInfo(mDeleteFolderID);
+			String folderName = folder != null ? folder.name : "";
+			dialog.setTitle(getString(R.string.delete_folder_title, folderName));
+			break;
+		}
 		}
 	}
 
@@ -304,22 +350,21 @@ public class FolderListActivity extends ListActivity {
 			return false;
 		}
 
-
 		switch (item.getItemId()) {
-			case MENU_ITEM_EXPORT:
-				Intent intent = new Intent();
-				intent.setClass(this, SudokuExportActivity.class);
-				intent.putExtra(SudokuExportActivity.EXTRA_FOLDER_ID, info.id);
-				startActivity(intent);
-				return true;
-			case MENU_ITEM_RENAME:
-				mRenameFolderID = info.id;
-				showDialog(DIALOG_RENAME_FOLDER);
-				return true;
-			case MENU_ITEM_DELETE:
-				mDeleteFolderID = info.id;
-				showDialog(DIALOG_DELETE_FOLDER);
-				return true;
+		case MENU_ITEM_EXPORT:
+			Intent intent = new Intent();
+			intent.setClass(this, SudokuExportActivity.class);
+			intent.putExtra(SudokuExportActivity.EXTRA_FOLDER_ID, info.id);
+			startActivity(intent);
+			return true;
+		case MENU_ITEM_RENAME:
+			mRenameFolderID = info.id;
+			showDialog(DIALOG_RENAME_FOLDER);
+			return true;
+		case MENU_ITEM_DELETE:
+			mDeleteFolderID = info.id;
+			showDialog(DIALOG_DELETE_FOLDER);
+			return true;
 		}
 		return false;
 	}
@@ -328,24 +373,25 @@ public class FolderListActivity extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent;
 		switch (item.getItemId()) {
-			case MENU_ITEM_ADD:
-				showDialog(DIALOG_ADD_FOLDER);
-				return true;
-			case MENU_ITEM_IMPORT:
-				intent = new Intent();
-				intent.setClass(this, FileListActivity.class);
-				intent.putExtra(FileListActivity.EXTRA_FOLDER_NAME, "/sdcard");
-				startActivity(intent);
-				return true;
-			case MENU_ITEM_EXPORT_ALL:
-				intent = new Intent();
-				intent.setClass(this, SudokuExportActivity.class);
-				intent.putExtra(SudokuExportActivity.EXTRA_FOLDER_ID, SudokuExportActivity.ALL_FOLDERS);
-				startActivity(intent);
-				return true;
-			case MENU_ITEM_ABOUT:
-				showDialog(DIALOG_ABOUT);
-				return true;
+		case MENU_ITEM_ADD:
+			showDialog(DIALOG_ADD_FOLDER);
+			return true;
+		case MENU_ITEM_IMPORT:
+			intent = new Intent();
+			intent.setClass(this, FileListActivity.class);
+			intent.putExtra(FileListActivity.EXTRA_FOLDER_NAME, "/sdcard");
+			startActivity(intent);
+			return true;
+		case MENU_ITEM_EXPORT_ALL:
+			intent = new Intent();
+			intent.setClass(this, SudokuExportActivity.class);
+			intent.putExtra(SudokuExportActivity.EXTRA_FOLDER_ID,
+					SudokuExportActivity.ALL_FOLDERS);
+			startActivity(intent);
+			return true;
+		case MENU_ITEM_ABOUT:
+			showDialog(DIALOG_ABOUT);
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -365,7 +411,6 @@ public class FolderListActivity extends ListActivity {
 		private Context mContext;
 		private FolderDetailLoader mDetailLoader;
 
-
 		public FolderListViewBinder(Context context) {
 			mContext = context;
 			mDetailLoader = new FolderDetailLoader(context);
@@ -375,20 +420,22 @@ public class FolderListActivity extends ListActivity {
 		public boolean setViewValue(View view, Cursor c, int columnIndex) {
 
 			switch (view.getId()) {
-				case R.id.name:
-					((TextView) view).setText(c.getString(columnIndex));
-					break;
-				case R.id.detail:
-					final long folderID = c.getLong(columnIndex);
-					final TextView detailView = (TextView) view;
-					detailView.setText(mContext.getString(R.string.loading));
-					mDetailLoader.loadDetailAsync(folderID, new FolderDetailCallback() {
-						@Override
-						public void onLoaded(FolderInfo folderInfo) {
-							if (folderInfo != null)
-								detailView.setText(folderInfo.getDetail(mContext));
-						}
-					});
+			case R.id.name:
+				((TextView) view).setText(c.getString(columnIndex));
+				break;
+			case R.id.detail:
+				final long folderID = c.getLong(columnIndex);
+				final TextView detailView = (TextView) view;
+				detailView.setText(mContext.getString(R.string.loading));
+				mDetailLoader.loadDetailAsync(folderID,
+						new FolderDetailCallback() {
+							@Override
+							public void onLoaded(FolderInfo folderInfo) {
+								if (folderInfo != null)
+									detailView.setText(folderInfo
+											.getDetail(mContext));
+							}
+						});
 			}
 
 			return true;
@@ -398,6 +445,5 @@ public class FolderListActivity extends ListActivity {
 			mDetailLoader.destroy();
 		}
 	}
-
 
 }

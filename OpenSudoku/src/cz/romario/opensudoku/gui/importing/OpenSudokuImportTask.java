@@ -11,9 +11,9 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import com.silo.app.opensudoku.R;
 import android.content.ContentResolver;
 import android.net.Uri;
-import cz.romario.opensudoku.R;
 import cz.romario.opensudoku.db.SudokuImportParams;
 import cz.romario.opensudoku.db.SudokuInvalidFormatException;
 import cz.romario.opensudoku.game.SudokuGame;

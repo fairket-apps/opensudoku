@@ -37,29 +37,33 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
 import android.widget.SimpleCursorAdapter.ViewBinder;
-import cz.romario.opensudoku.R;
+import android.widget.TextView;
+
+import com.silo.app.opensudoku.R;
+import com.fairket.sdk.android.FairketApiClient;
+import com.fairket.sdk.android.FairketHelperForGingerbread;
+
 import cz.romario.opensudoku.db.SudokuColumns;
 import cz.romario.opensudoku.db.SudokuDatabase;
-import cz.romario.opensudoku.game.FolderInfo;
 import cz.romario.opensudoku.game.CellCollection;
+import cz.romario.opensudoku.game.FolderInfo;
 import cz.romario.opensudoku.game.SudokuGame;
 import cz.romario.opensudoku.gui.FolderDetailLoader.FolderDetailCallback;
 import cz.romario.opensudoku.utils.AndroidUtils;
 
 /**
  * List of puzzles in folder.
- *
+ * 
  * @author romario
  */
 public class SudokuListActivity extends ListActivity {
@@ -80,9 +84,12 @@ public class SudokuListActivity extends ListActivity {
 	private static final int DIALOG_EDIT_NOTE = 2;
 	private static final int DIALOG_FILTER = 3;
 
-	private static final String FILTER_STATE_NOT_STARTED = "filter" + SudokuGame.GAME_STATE_NOT_STARTED;
-	private static final String FILTER_STATE_PLAYING = "filter" + SudokuGame.GAME_STATE_PLAYING;
-	private static final String FILTER_STATE_SOLVED = "filter" + SudokuGame.GAME_STATE_COMPLETED;
+	private static final String FILTER_STATE_NOT_STARTED = "filter"
+			+ SudokuGame.GAME_STATE_NOT_STARTED;
+	private static final String FILTER_STATE_PLAYING = "filter"
+			+ SudokuGame.GAME_STATE_PLAYING;
+	private static final String FILTER_STATE_SOLVED = "filter"
+			+ SudokuGame.GAME_STATE_COMPLETED;
 
 	private static final String TAG = "SudokuListActivity";
 
@@ -101,6 +108,8 @@ public class SudokuListActivity extends ListActivity {
 	private Cursor mCursor;
 	private SudokuDatabase mDatabase;
 	private FolderDetailLoader mFolderDetailLoader;
+
+	private FairketApiClient mFairket;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -127,21 +136,34 @@ public class SudokuListActivity extends ListActivity {
 			return;
 		}
 
-		final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		final SharedPreferences settings = PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext());
 		mListFilter = new SudokuListFilter(getApplicationContext());
-		mListFilter.showStateNotStarted = settings.getBoolean(FILTER_STATE_NOT_STARTED, true);
-		mListFilter.showStatePlaying = settings.getBoolean(FILTER_STATE_PLAYING, true);
-		mListFilter.showStateCompleted = settings.getBoolean(FILTER_STATE_SOLVED, true);
+		mListFilter.showStateNotStarted = settings.getBoolean(
+				FILTER_STATE_NOT_STARTED, true);
+		mListFilter.showStatePlaying = settings.getBoolean(
+				FILTER_STATE_PLAYING, true);
+		mListFilter.showStateCompleted = settings.getBoolean(
+				FILTER_STATE_SOLVED, true);
 
 		mAdapter = new SimpleCursorAdapter(this, R.layout.sudoku_list_item,
-				null, new String[]{SudokuColumns.DATA, SudokuColumns.STATE,
-				SudokuColumns.TIME, SudokuColumns.LAST_PLAYED,
-				SudokuColumns.CREATED, SudokuColumns.PUZZLE_NOTE},
-				new int[]{R.id.sudoku_board, R.id.state, R.id.time,
-						R.id.last_played, R.id.created, R.id.note});
+				null, new String[] { SudokuColumns.DATA, SudokuColumns.STATE,
+						SudokuColumns.TIME, SudokuColumns.LAST_PLAYED,
+						SudokuColumns.CREATED, SudokuColumns.PUZZLE_NOTE },
+				new int[] { R.id.sudoku_board, R.id.state, R.id.time,
+						R.id.last_played, R.id.created, R.id.note });
 		mAdapter.setViewBinder(new SudokuListViewBinder(this));
 		updateList();
 		setListAdapter(mAdapter);
+		// FairketApiClient Integration
+		mFairket = FairketHelperForGingerbread.onCreate(this, FolderListActivity.FAIRKET_APP_PUB_KEY, FolderListActivity.FAIRKET_LOG);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		FairketHelperForGingerbread.onPause(mFairket);
 	}
 
 	@Override
@@ -150,6 +172,7 @@ public class SudokuListActivity extends ListActivity {
 
 		mDatabase.close();
 		mFolderDetailLoader.destroy();
+		FairketHelperForGingerbread.onDestroy(mFairket);
 	}
 
 	@Override
@@ -176,6 +199,9 @@ public class SudokuListActivity extends ListActivity {
 		// the puzzle list is naturally refreshed when the window
 		// regains focus, so we only need to update the title
 		updateTitle();
+
+		FairketHelperForGingerbread.onResume(mFairket);
+
 	}
 
 	@Override
@@ -199,15 +225,17 @@ public class SudokuListActivity extends ListActivity {
 
 		// This is our one standard application action -- inserting a
 		// new note into the list.
-		menu.add(0, MENU_ITEM_FOLDERS, 0, R.string.folders).setShortcut('1', 'f')
+		menu.add(0, MENU_ITEM_FOLDERS, 0, R.string.folders)
+				.setShortcut('1', 'f')
 				.setIcon(android.R.drawable.ic_menu_sort_by_size);
 		menu.add(0, MENU_ITEM_FILTER, 1, R.string.filter).setShortcut('1', 'f')
 				.setIcon(android.R.drawable.ic_menu_view);
-		menu.add(0, MENU_ITEM_INSERT, 2, R.string.add_sudoku).setShortcut('3', 'a')
-				.setIcon(android.R.drawable.ic_menu_add);
+		menu.add(0, MENU_ITEM_INSERT, 2, R.string.add_sudoku)
+				.setShortcut('3', 'a').setIcon(android.R.drawable.ic_menu_add);
 		// I'm not sure this one is ready for release
-//		menu.add(0, MENU_ITEM_GENERATE, 3, R.string.generate_sudoku).setShortcut('4', 'g')
-//		.setIcon(android.R.drawable.ic_menu_add);
+		// menu.add(0, MENU_ITEM_GENERATE, 3,
+		// R.string.generate_sudoku).setShortcut('4', 'g')
+		// .setIcon(android.R.drawable.ic_menu_add);
 
 		// Generate any additional actions that can be performed on the
 		// overall list. In a normal install, there are no additional
@@ -225,98 +253,116 @@ public class SudokuListActivity extends ListActivity {
 
 	@Override
 	protected Dialog onCreateDialog(int id) {
-		final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		final SharedPreferences settings = PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext());
 		switch (id) {
-			case DIALOG_DELETE_PUZZLE:
-				return new AlertDialog.Builder(this).setIcon(
-						android.R.drawable.ic_delete).setTitle("Puzzle").setMessage(
-						R.string.delete_puzzle_confirm)
-						.setPositiveButton(android.R.string.yes,
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog,
-														int whichButton) {
-										mDatabase.deleteSudoku(mDeletePuzzleID);
-										updateList();
-									}
-								}).setNegativeButton(android.R.string.no, null).create();
-			case DIALOG_EDIT_NOTE:
+		case DIALOG_DELETE_PUZZLE:
+			return new AlertDialog.Builder(this)
+					.setIcon(android.R.drawable.ic_delete)
+					.setTitle("Puzzle")
+					.setMessage(R.string.delete_puzzle_confirm)
+					.setPositiveButton(android.R.string.yes,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									mDatabase.deleteSudoku(mDeletePuzzleID);
+									updateList();
+								}
+							}).setNegativeButton(android.R.string.no, null)
+					.create();
+		case DIALOG_EDIT_NOTE:
 
-				LayoutInflater factory = LayoutInflater.from(this);
-				final View noteView = factory.inflate(R.layout.sudoku_list_item_note,
-						null);
-				mEditNoteInput = (TextView) noteView.findViewById(R.id.note);
-				return new AlertDialog.Builder(this).setIcon(
-						android.R.drawable.ic_menu_add).setTitle(R.string.edit_note)
-						.setView(noteView).setPositiveButton(R.string.save,
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog,
-														int whichButton) {
-										SudokuGame game = mDatabase.getSudoku(mEditNotePuzzleID);
-										game.setNote(mEditNoteInput.getText()
-												.toString());
+			LayoutInflater factory = LayoutInflater.from(this);
+			final View noteView = factory.inflate(
+					R.layout.sudoku_list_item_note, null);
+			mEditNoteInput = (TextView) noteView.findViewById(R.id.note);
+			return new AlertDialog.Builder(this)
+					.setIcon(android.R.drawable.ic_menu_add)
+					.setTitle(R.string.edit_note)
+					.setView(noteView)
+					.setPositiveButton(R.string.save,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									SudokuGame game = mDatabase
+											.getSudoku(mEditNotePuzzleID);
+									game.setNote(mEditNoteInput.getText()
+											.toString());
+									mDatabase.updateSudoku(game);
+									updateList();
+								}
+							}).setNegativeButton(android.R.string.cancel, null)
+					.create();
+		case DIALOG_RESET_PUZZLE:
+			return new AlertDialog.Builder(this)
+					.setIcon(android.R.drawable.ic_menu_rotate)
+					.setTitle("Puzzle")
+					.setMessage(R.string.reset_puzzle_confirm)
+					.setPositiveButton(android.R.string.yes,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									SudokuGame game = mDatabase
+											.getSudoku(mResetPuzzleID);
+									if (game != null) {
+										game.reset();
 										mDatabase.updateSudoku(game);
-										updateList();
 									}
-								}).setNegativeButton(android.R.string.cancel, null).create();
-			case DIALOG_RESET_PUZZLE:
-				return new AlertDialog.Builder(this).setIcon(
-						android.R.drawable.ic_menu_rotate).setTitle("Puzzle")
-						.setMessage(R.string.reset_puzzle_confirm)
-						.setPositiveButton(android.R.string.yes,
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog,
-														int whichButton) {
-										SudokuGame game = mDatabase.getSudoku(mResetPuzzleID);
-										if (game != null) {
-											game.reset();
-											mDatabase.updateSudoku(game);
-										}
-										updateList();
+									updateList();
+								}
+							}).setNegativeButton(android.R.string.no, null)
+					.create();
+		case DIALOG_FILTER:
+			return new AlertDialog.Builder(this)
+					.setIcon(android.R.drawable.ic_menu_view)
+					.setTitle(R.string.filter_by_gamestate)
+					.setMultiChoiceItems(
+							R.array.game_states,
+							new boolean[] { mListFilter.showStateNotStarted,
+									mListFilter.showStatePlaying,
+									mListFilter.showStateCompleted, },
+							new DialogInterface.OnMultiChoiceClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton, boolean isChecked) {
+									switch (whichButton) {
+									case 0:
+										mListFilter.showStateNotStarted = isChecked;
+										break;
+									case 1:
+										mListFilter.showStatePlaying = isChecked;
+										break;
+									case 2:
+										mListFilter.showStateCompleted = isChecked;
+										break;
 									}
-								}).setNegativeButton(android.R.string.no, null).create();
-			case DIALOG_FILTER:
-				return new AlertDialog.Builder(this)
-						.setIcon(android.R.drawable.ic_menu_view)
-						.setTitle(R.string.filter_by_gamestate)
-						.setMultiChoiceItems(
-								R.array.game_states,
-								new boolean[]{
-										mListFilter.showStateNotStarted,
-										mListFilter.showStatePlaying,
-										mListFilter.showStateCompleted,
-								},
-								new DialogInterface.OnMultiChoiceClickListener() {
-									public void onClick(DialogInterface dialog, int whichButton,
-														boolean isChecked) {
-										switch (whichButton) {
-											case 0:
-												mListFilter.showStateNotStarted = isChecked;
-												break;
-											case 1:
-												mListFilter.showStatePlaying = isChecked;
-												break;
-											case 2:
-												mListFilter.showStateCompleted = isChecked;
-												break;
-										}
-									}
-								})
-						.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int whichButton) {
-								settings.edit()
-										.putBoolean(FILTER_STATE_NOT_STARTED, mListFilter.showStateNotStarted)
-										.putBoolean(FILTER_STATE_PLAYING, mListFilter.showStatePlaying)
-										.putBoolean(FILTER_STATE_SOLVED, mListFilter.showStateCompleted)
-										.commit();
-								updateList();
-							}
-						})
-						.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int whichButton) {
+								}
+							})
+					.setPositiveButton(android.R.string.ok,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									settings.edit()
+											.putBoolean(
+													FILTER_STATE_NOT_STARTED,
+													mListFilter.showStateNotStarted)
+											.putBoolean(
+													FILTER_STATE_PLAYING,
+													mListFilter.showStatePlaying)
+											.putBoolean(
+													FILTER_STATE_SOLVED,
+													mListFilter.showStateCompleted)
+											.commit();
+									updateList();
+								}
+							})
+					.setNegativeButton(android.R.string.cancel,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
 
-								/* User clicked No so do some stuff */
-							}
-						}).create();
+									/* User clicked No so do some stuff */
+								}
+							}).create();
 		}
 		return null;
 	}
@@ -326,18 +372,18 @@ public class SudokuListActivity extends ListActivity {
 		super.onPrepareDialog(id, dialog);
 
 		switch (id) {
-			case DIALOG_EDIT_NOTE: {
-				SudokuDatabase db = new SudokuDatabase(getApplicationContext());
-				SudokuGame game = db.getSudoku(mEditNotePuzzleID);
-				mEditNoteInput.setText(game.getNote());
-				break;
-			}
+		case DIALOG_EDIT_NOTE: {
+			SudokuDatabase db = new SudokuDatabase(getApplicationContext());
+			SudokuGame game = db.getSudoku(mEditNotePuzzleID);
+			mEditNoteInput.setText(game.getNote());
+			break;
+		}
 		}
 	}
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View view,
-									ContextMenuInfo menuInfo) {
+			ContextMenuInfo menuInfo) {
 		AdapterView.AdapterContextMenuInfo info;
 		try {
 			info = (AdapterView.AdapterContextMenuInfo) menuInfo;
@@ -373,27 +419,27 @@ public class SudokuListActivity extends ListActivity {
 		}
 
 		switch (item.getItemId()) {
-			case MENU_ITEM_PLAY:
-				playSudoku(info.id);
-				return true;
-			case MENU_ITEM_EDIT:
-				Intent i = new Intent(this, SudokuEditActivity.class);
-				i.setAction(Intent.ACTION_EDIT);
-				i.putExtra(SudokuEditActivity.EXTRA_SUDOKU_ID, info.id);
-				startActivity(i);
-				return true;
-			case MENU_ITEM_DELETE:
-				mDeletePuzzleID = info.id;
-				showDialog(DIALOG_DELETE_PUZZLE);
-				return true;
-			case MENU_ITEM_EDIT_NOTE:
-				mEditNotePuzzleID = info.id;
-				showDialog(DIALOG_EDIT_NOTE);
-				return true;
-			case MENU_ITEM_RESET:
-				mResetPuzzleID = info.id;
-				showDialog(DIALOG_RESET_PUZZLE);
-				return true;
+		case MENU_ITEM_PLAY:
+			playSudoku(info.id);
+			return true;
+		case MENU_ITEM_EDIT:
+			Intent i = new Intent(this, SudokuEditActivity.class);
+			i.setAction(Intent.ACTION_EDIT);
+			i.putExtra(SudokuEditActivity.EXTRA_SUDOKU_ID, info.id);
+			startActivity(i);
+			return true;
+		case MENU_ITEM_DELETE:
+			mDeletePuzzleID = info.id;
+			showDialog(DIALOG_DELETE_PUZZLE);
+			return true;
+		case MENU_ITEM_EDIT_NOTE:
+			mEditNotePuzzleID = info.id;
+			showDialog(DIALOG_EDIT_NOTE);
+			return true;
+		case MENU_ITEM_RESET:
+			mResetPuzzleID = info.id;
+			showDialog(DIALOG_RESET_PUZZLE);
+			return true;
 		}
 		return false;
 	}
@@ -401,23 +447,23 @@ public class SudokuListActivity extends ListActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case MENU_ITEM_INSERT: {
-				// Launch activity to insert a new item
-				Intent i = new Intent(this, SudokuEditActivity.class);
-				i.setAction(Intent.ACTION_INSERT);
-				i.putExtra(SudokuEditActivity.EXTRA_FOLDER_ID, mFolderID);
-				startActivity(i);
-				return true;
-			}
-			case MENU_ITEM_FILTER:
-				showDialog(DIALOG_FILTER);
-				return true;
-			case MENU_ITEM_FOLDERS: {
-				Intent i = new Intent(this, FolderListActivity.class);
-				startActivity(i);
-				finish();
-				return true;
-			}
+		case MENU_ITEM_INSERT: {
+			// Launch activity to insert a new item
+			Intent i = new Intent(this, SudokuEditActivity.class);
+			i.setAction(Intent.ACTION_INSERT);
+			i.putExtra(SudokuEditActivity.EXTRA_FOLDER_ID, mFolderID);
+			startActivity(i);
+			return true;
+		}
+		case MENU_ITEM_FILTER:
+			showDialog(DIALOG_FILTER);
+			return true;
+		case MENU_ITEM_FOLDERS: {
+			Intent i = new Intent(this, FolderListActivity.class);
+			startActivity(i);
+			finish();
+			return true;
+		}
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -444,10 +490,12 @@ public class SudokuListActivity extends ListActivity {
 
 	private void updateFilterStatus() {
 
-		if (mListFilter.showStateCompleted && mListFilter.showStateNotStarted && mListFilter.showStatePlaying) {
+		if (mListFilter.showStateCompleted && mListFilter.showStateNotStarted
+				&& mListFilter.showStatePlaying) {
 			mFilterStatus.setVisibility(View.GONE);
 		} else {
-			mFilterStatus.setText(getString(R.string.filter_active, mListFilter));
+			mFilterStatus
+					.setText(getString(R.string.filter_active, mListFilter));
 			mFilterStatus.setVisibility(View.VISIBLE);
 		}
 	}
@@ -456,13 +504,17 @@ public class SudokuListActivity extends ListActivity {
 		FolderInfo folder = mDatabase.getFolderInfo(mFolderID);
 		setTitle(folder.name);
 
-		mFolderDetailLoader.loadDetailAsync(mFolderID, new FolderDetailCallback() {
-			@Override
-			public void onLoaded(FolderInfo folderInfo) {
-				if (folderInfo != null)
-					setTitle(folderInfo.name + " - " + folderInfo.getDetail(getApplicationContext()));
-			}
-		});
+		mFolderDetailLoader.loadDetailAsync(mFolderID,
+				new FolderDetailCallback() {
+					@Override
+					public void onLoaded(FolderInfo folderInfo) {
+						if (folderInfo != null)
+							setTitle(folderInfo.name
+									+ " - "
+									+ folderInfo
+											.getDetail(getApplicationContext()));
+					}
+				});
 	}
 
 	private void playSudoku(long sudokuID) {
@@ -491,99 +543,104 @@ public class SudokuListActivity extends ListActivity {
 			TextView label = null;
 
 			switch (view.getId()) {
-				case R.id.sudoku_board:
-					String data = c.getString(columnIndex);
-					// TODO: still can be faster, I don't have to call initCollection and read notes
-					CellCollection cells = null;
-					;
-					try {
-						cells = CellCollection.deserialize(data);
-					} catch (Exception e) {
-						long id = c.getLong(c.getColumnIndex(SudokuColumns._ID));
-						Log.e(TAG, String.format("Exception occurred when deserializing puzzle with id %s.", id), e);
-					}
-					SudokuBoardView board = (SudokuBoardView) view;
-					board.setReadOnly(true);
-					board.setFocusable(false);
-					((SudokuBoardView) view).setCells(cells);
+			case R.id.sudoku_board:
+				String data = c.getString(columnIndex);
+				// TODO: still can be faster, I don't have to call
+				// initCollection and read notes
+				CellCollection cells = null;
+				;
+				try {
+					cells = CellCollection.deserialize(data);
+				} catch (Exception e) {
+					long id = c.getLong(c.getColumnIndex(SudokuColumns._ID));
+					Log.e(TAG,
+							String.format(
+									"Exception occurred when deserializing puzzle with id %s.",
+									id), e);
+				}
+				SudokuBoardView board = (SudokuBoardView) view;
+				board.setReadOnly(true);
+				board.setFocusable(false);
+				((SudokuBoardView) view).setCells(cells);
+				break;
+			case R.id.state:
+				label = ((TextView) view);
+				String stateString = null;
+				switch (state) {
+				case SudokuGame.GAME_STATE_COMPLETED:
+					stateString = mContext.getString(R.string.solved);
 					break;
-				case R.id.state:
-					label = ((TextView) view);
-					String stateString = null;
-					switch (state) {
-						case SudokuGame.GAME_STATE_COMPLETED:
-							stateString = mContext.getString(R.string.solved);
-							break;
-						case SudokuGame.GAME_STATE_PLAYING:
-							stateString = mContext.getString(R.string.playing);
-							break;
-					}
-					label.setVisibility(stateString == null ? View.GONE
-							: View.VISIBLE);
-					label.setText(stateString);
-					if (state == SudokuGame.GAME_STATE_COMPLETED) {
-						// TODO: read colors from android resources
-						label.setTextColor(Color.rgb(187, 187, 187));
-					} else {
-						label.setTextColor(Color.rgb(255, 255, 255));
-						//label.setTextColor(SudokuListActivity.this.getResources().getColor(R.));
-					}
+				case SudokuGame.GAME_STATE_PLAYING:
+					stateString = mContext.getString(R.string.playing);
 					break;
-				case R.id.time:
-					long time = c.getLong(columnIndex);
-					label = ((TextView) view);
-					String timeString = null;
-					if (time != 0) {
-						timeString = mGameTimeFormatter.format(time);
-					}
-					label.setVisibility(timeString == null ? View.GONE
-							: View.VISIBLE);
-					label.setText(timeString);
-					if (state == SudokuGame.GAME_STATE_COMPLETED) {
-						// TODO: read colors from android resources
-						label.setTextColor(Color.rgb(187, 187, 187));
-					} else {
-						label.setTextColor(Color.rgb(255, 255, 255));
-					}
-					break;
-				case R.id.last_played:
-					long lastPlayed = c.getLong(columnIndex);
-					label = ((TextView) view);
-					String lastPlayedString = null;
-					if (lastPlayed != 0) {
-						lastPlayedString = mContext.getString(R.string.last_played_at,
-								getDateAndTimeForHumans(lastPlayed));
-					}
-					label.setVisibility(lastPlayedString == null ? View.GONE
-							: View.VISIBLE);
-					label.setText(lastPlayedString);
-					break;
-				case R.id.created:
-					long created = c.getLong(columnIndex);
-					label = ((TextView) view);
-					String createdString = null;
-					if (created != 0) {
-						createdString = mContext.getString(R.string.created_at,
-								getDateAndTimeForHumans(created));
-					}
-					// TODO: when GONE, note is not correctly aligned below last_played
-					label.setVisibility(createdString == null ? View.INVISIBLE
-							: View.VISIBLE);
-					label.setText(createdString);
-					break;
-				case R.id.note:
-					String note = c.getString(columnIndex);
-					label = ((TextView) view);
-					if (note == null || note.trim() == "") {
-						((TextView) view).setVisibility(View.GONE);
-					} else {
-						((TextView) view).setText(note);
-					}
-					label
-							.setVisibility((note == null || note.trim().equals("")) ? View.GONE
-									: View.VISIBLE);
-					label.setText(note);
-					break;
+				}
+				label.setVisibility(stateString == null ? View.GONE
+						: View.VISIBLE);
+				label.setText(stateString);
+				if (state == SudokuGame.GAME_STATE_COMPLETED) {
+					// TODO: read colors from android resources
+					label.setTextColor(Color.rgb(187, 187, 187));
+				} else {
+					label.setTextColor(Color.rgb(255, 255, 255));
+					// label.setTextColor(SudokuListActivity.this.getResources().getColor(R.));
+				}
+				break;
+			case R.id.time:
+				long time = c.getLong(columnIndex);
+				label = ((TextView) view);
+				String timeString = null;
+				if (time != 0) {
+					timeString = mGameTimeFormatter.format(time);
+				}
+				label.setVisibility(timeString == null ? View.GONE
+						: View.VISIBLE);
+				label.setText(timeString);
+				if (state == SudokuGame.GAME_STATE_COMPLETED) {
+					// TODO: read colors from android resources
+					label.setTextColor(Color.rgb(187, 187, 187));
+				} else {
+					label.setTextColor(Color.rgb(255, 255, 255));
+				}
+				break;
+			case R.id.last_played:
+				long lastPlayed = c.getLong(columnIndex);
+				label = ((TextView) view);
+				String lastPlayedString = null;
+				if (lastPlayed != 0) {
+					lastPlayedString = mContext.getString(
+							R.string.last_played_at,
+							getDateAndTimeForHumans(lastPlayed));
+				}
+				label.setVisibility(lastPlayedString == null ? View.GONE
+						: View.VISIBLE);
+				label.setText(lastPlayedString);
+				break;
+			case R.id.created:
+				long created = c.getLong(columnIndex);
+				label = ((TextView) view);
+				String createdString = null;
+				if (created != 0) {
+					createdString = mContext.getString(R.string.created_at,
+							getDateAndTimeForHumans(created));
+				}
+				// TODO: when GONE, note is not correctly aligned below
+				// last_played
+				label.setVisibility(createdString == null ? View.INVISIBLE
+						: View.VISIBLE);
+				label.setText(createdString);
+				break;
+			case R.id.note:
+				String note = c.getString(columnIndex);
+				label = ((TextView) view);
+				if (note == null || note.trim() == "") {
+					((TextView) view).setVisibility(View.GONE);
+				} else {
+					((TextView) view).setText(note);
+				}
+				label.setVisibility((note == null || note.trim().equals("")) ? View.GONE
+						: View.VISIBLE);
+				label.setText(note);
+				break;
 			}
 
 			return true;
@@ -598,11 +655,14 @@ public class SudokuListActivity extends ListActivity {
 					- (1000 * 60 * 60 * 24));
 
 			if (date.after(today)) {
-				return mContext.getString(R.string.at_time, mTimeFormatter.format(date));
+				return mContext.getString(R.string.at_time,
+						mTimeFormatter.format(date));
 			} else if (date.after(yesterday)) {
-				return mContext.getString(R.string.yesterday_at_time, mTimeFormatter.format(date));
+				return mContext.getString(R.string.yesterday_at_time,
+						mTimeFormatter.format(date));
 			} else {
-				return mContext.getString(R.string.on_date, mDateTimeFormatter.format(date));
+				return mContext.getString(R.string.on_date,
+						mDateTimeFormatter.format(date));
 			}
 
 		}

@@ -17,13 +17,15 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import cz.romario.opensudoku.R;
+
+import com.silo.app.opensudoku.R;
+
 import cz.romario.opensudoku.db.SudokuDatabase;
 import cz.romario.opensudoku.game.FolderInfo;
 import cz.romario.opensudoku.gui.exporting.FileExportTask;
+import cz.romario.opensudoku.gui.exporting.FileExportTask.OnExportFinishedListener;
 import cz.romario.opensudoku.gui.exporting.FileExportTaskParams;
 import cz.romario.opensudoku.gui.exporting.FileExportTaskResult;
-import cz.romario.opensudoku.gui.exporting.FileExportTask.OnExportFinishedListener;
 
 public class SudokuExportActivity extends Activity {
 
