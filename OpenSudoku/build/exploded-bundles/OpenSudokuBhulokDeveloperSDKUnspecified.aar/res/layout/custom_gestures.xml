@@ -1,0 +1,14 @@
+
+
+    <android.gesture.GestureOverlayView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/gOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gestureColor="#00000000" 
+        android:uncertainGestureColor="#00000000"
+        android:background="#55000000"       
+        android:eventsInterceptionEnabled="true"
+        android:gestureStrokeType="multiple" >
+    </android.gesture.GestureOverlayView>
+
+<!-- From: file:/Users/lohith/root/work/tappora/git/bhulok/bl_android_sdk/BhulokDeveloperSDK/res/layout/custom_gestures.xml -->

@@ -1,0 +1,11 @@
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shareInterpolator="false" >
+
+    <translate
+        android:duration="140"
+        android:fromXDelta="100%"
+        android:fromYDelta="0%"
+        android:toXDelta="0%"
+        android:toYDelta="0%" />
+
+</set><!-- From: file:/Users/lohith/root/work/tappora/git/bhulok/bl_android_app_kitty/BhulokCommonSDK/res/anim/in_from_right.xml --><!-- From: file:/Users/lohith/root/work/tappora/git/fairket-lohith-github/opensudoku/OpenSudoku/build/exploded-bundles/OpenSudokuBhulokCommonSDKUnspecified.aar/res/anim/in_from_right.xml -->

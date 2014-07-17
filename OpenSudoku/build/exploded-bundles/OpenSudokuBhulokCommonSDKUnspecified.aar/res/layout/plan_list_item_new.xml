@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_gradual_buy" >
+
+    <RelativeLayout
+        android:id="@+id/grpContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp" >
+
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="asdfsaf"
+            android:textSize="18sp" />
+
+        <!--
+             WebView
+            android:id="@+id/wvDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtName"
+            android:background="@android:color/transparent" /
+        -->
+
+        <TextView
+            android:id="@+id/txtDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtName"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="asdfasdfa"
+            android:textColor="@color/fairket_text_2"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/grpContent"
+        android:layout_marginBottom="10dp" >
+
+        <Button
+            android:id="@+id/btnAction"
+            android:layout_width="135dp"
+            android:layout_height="28dp"
+            android:background="@drawable/btn_platinum_sub" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</RelativeLayout><!-- From: file:/Users/lohith/root/work/tappora/git/bhulok/bl_android_app_kitty/BhulokCommonSDK/res/layout/plan_list_item_new.xml -->

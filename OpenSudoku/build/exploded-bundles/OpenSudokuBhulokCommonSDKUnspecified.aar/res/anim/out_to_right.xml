@@ -1,0 +1,11 @@
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shareInterpolator="false" >
+
+    <translate
+        android:duration="140"
+        android:fromXDelta="0%"
+        android:fromYDelta="0%"
+        android:toXDelta="100%"
+        android:toYDelta="0%" />
+
+</set><!-- From: file:/Users/lohith/root/work/tappora/git/bhulok/bl_android_app_kitty/BhulokCommonSDK/res/anim/out_to_right.xml -->

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    
+
+    <TextView
+        android:id="@+id/txt1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:text="Usage Today"/>
+    
+    <TextView
+        android:id="@+id/txt2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_below="@+id/txt1"
+        android:layout_marginTop="10dp"
+        android:layout_alignLeft="@+id/txt1"
+        android:text="Time"/>
+    
+    <TextView
+        android:id="@+id/txt3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_toRightOf="@+id/txt2"
+        android:layout_alignTop="@+id/txt2"
+        android:layout_marginLeft="100dp"
+        android:text="Money"/>
+    
+    <TextView
+        android:id="@+id/txt4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_below="@+id/txt2"
+        android:layout_alignLeft="@+id/txt2"
+        android:text="Fetching Value"/>
+    
+    <TextView
+        android:id="@+id/txt5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_toRightOf="@+id/txt4"
+        android:layout_alignTop="@+id/txt4"
+        android:layout_alignLeft="@+id/txt3"
+        android:text="Fetching Value"/>
+    
+    
+    <TextView
+        android:id="@+id/txt01"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:layout_below="@+id/txt4"
+        android:layout_marginTop="10dp"
+        android:layout_alignLeft="@+id/txt4"
+        android:text="Total Usage"/>
+    
+    <TextView
+        android:id="@+id/txt02"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_below="@+id/txt01"
+        android:layout_marginTop="10dp"
+        android:layout_alignLeft="@+id/txt01"
+        android:text="Time"/>
+    
+    <TextView
+        android:id="@+id/txt03"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_toRightOf="@+id/txt02"
+        android:layout_alignTop="@+id/txt02"
+        android:layout_marginLeft="100dp"
+        android:text="Money"/>
+    
+    <TextView
+        android:id="@+id/txt04"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_below="@+id/txt02"
+        android:layout_alignLeft="@+id/txt02"
+        android:text="Fetching Value"/>
+    
+    <TextView
+        android:id="@+id/txt05"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_toRightOf="@+id/txt04"
+        android:layout_alignTop="@+id/txt04"
+        android:layout_alignLeft="@+id/txt03"
+        android:text="Fetching Value"/>
+
+     <Button
+        android:id="@+id/okButton"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="OK"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/txt04"
+        />
+
+</RelativeLayout><!-- From: file:/Users/lohith/root/work/tappora/git/bhulok/bl_android_app_kitty/BhulokCommonSDK/res/layout/stats_dialog.xml -->

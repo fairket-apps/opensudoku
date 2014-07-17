@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- From: file:/Users/lohith/root/work/tappora/git/fairket-lohith-github/opensudoku/OpenSudoku/res/values-sv/arrays.xml -->
+    <eat-comment />
+
+    <string-array name="game_states">
+        <item>Ej påbörjade</item>
+        <item>Påbörjade</item>
+        <item>Lösta</item>
+    </string-array>
+    <!-- From: file:/Users/lohith/root/work/tappora/git/fairket-lohith-github/opensudoku/OpenSudoku/res/values-sv/strings.xml -->
+    <eat-comment />
+
+    <string name="about">Om</string>
+    <string name="add_folder">Lägg till mapp</string>
+    <string name="add_sudoku">Lägg till pussel</string>
+    <string name="all_solved">alla lösta</string>
+    <string name="app_name">OpenSudoku</string>
+    <string name="at_time">klockan %s</string>
+    <!-- From: file:/Users/lohith/root/work/tappora/git/fairket-lohith-github/opensudoku/OpenSudoku/build/exploded-bundles/ComGoogleAndroidGmsPlayServices4242.aar/res/values-sv/strings.xml -->
+    <eat-comment />
+
+    <string name="auth_client_needs_enabling_title" msgid="3983201110833868073">"Google Play Tjänster måste aktiveras för en att app ska fungera."</string>
+    <string name="auth_client_needs_installation_title" msgid="7999585836145154206">"Google Play Tjänster måste installeras för att en app ska fungera."</string>
+    <string name="auth_client_needs_update_title" msgid="6488605506794595966">"Google Play Tjänster måste uppdateras för en app ska fungera."</string>
+    <string name="auth_client_play_services_err_notification_msg" msgid="3635065018897986478">"Fel på Google Play Tjänster"</string>
+    <string name="auth_client_requested_by_msg" msgid="6304135633531965756">"Begärdes av <ns1:g id="APP_NAME">%1$s</ns1:g>"</string>
+    <string name="auth_client_using_bad_version_title" msgid="2534454398764507874">"En olämplig version av Google Play Tjänster anropades av en app."</string>
+    <!-- From: file:/Users/lohith/root/work/tappora/git/fairket-lohith-github/opensudoku/OpenSudoku/res/values-sv/strings.xml -->
+    <eat-comment />
+
+    <string name="clear">Töm</string>
+    <string name="clear_all_notes">Ta bort alla anteckningar</string>
+    <string name="clear_all_notes_confirm">Är du säker på att du vill ta bort alla anteckningar?</string>
+    <string name="close">Stäng</string>
+    <!-- From: file:/Users/lohith/root/work/tappora/git/fairket-lohith-github/opensudoku/OpenSudoku/build/exploded-bundles/ComGoogleAndroidGmsPlayServices4242.aar/res/values-sv/strings.xml -->
+    <eat-comment />
+
+    <string name="common_google_play_services_enable_button" msgid="4181637455539816337">"Aktivera Google Play Tjänster"</string>
+    <string name="common_google_play_services_enable_text" msgid="7627896071867667758">"Du måste aktivera Google Play Tjänster för att den här appen ska fungera."</string>
+    <string name="common_google_play_services_enable_title" msgid="529078775174559253">"Aktivera Google Play Tjänster"</string>
+    <string name="common_google_play_services_install_button" msgid="8515591849428043265">"Hämta Google Play Tjänster"</string>
+    <string name="common_google_play_services_install_text_phone" msgid="8685301130651051380">"Den här appen kan inte köras utan Google Play Tjänster, som saknas på mobilen."</string>
+    <string name="common_google_play_services_install_text_tablet" msgid="1589957570365247855">"Den här appen kan inte köras utan Google Play Tjänster, som saknas på surfplattan."</string>
+    <string name="common_google_play_services_install_title" msgid="26645092511305524">"Hämta Google Play Tjänster"</string>
+    <string name="common_google_play_services_invalid_account_text" msgid="4983316348021735578">"Det angivna kontot finns inte på den här enheten. Välj ett annat konto."</string>
+    <string name="common_google_play_services_invalid_account_title" msgid="1066672360770936753">"Ogiltigt konto"</string>
+    <string name="common_google_play_services_network_error_text" msgid="9038847255613537209">"En dataanslutning krävs för att ansluta till Google Plays tjänster."</string>
+    <string name="common_google_play_services_network_error_title" msgid="3827284619958211114">"Nätverksfel"</string>
+    <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Okänt problem med Google Play Tjänster"</string>
+    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"Datumet på enheten verkar inte vara rätt. Kontrollera datumet på enheten."</string>
+    <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"Några av dina appar använder Google Play-tjänster som inte stöds av din enhet. Kontakta tillverkaren om du vill ha hjälp."</string>
+    <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Google Play-tjänster"</string>
+    <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Uppdatera"</string>
+    <string name="common_google_play_services_update_text" msgid="448354684997260580">"Du måste uppdatera Google Play Tjänster innan du kan köra den här appen."</string>
+    <string name="common_google_play_services_update_title" msgid="6006316683626838685">"Uppdatera Google Play Tjänster"</string>
+    <string name="common_signin_button_text" msgid="9071884888741449141">"Logga in"</string>
+    <string name="common_signin_button_text_long" msgid="2429381841831957106">"Logga in med Google"</string>
+    <!-- From: file:/Users/lohith/root/work/tappora/git/fairket-lohith-github/opensudoku/OpenSudoku/res/values-sv/strings.xml -->
+    <eat-comment />
+
+    <string name="congrats">Grattis, du har löst pusslet på %s.</string>
+    <string name="created_at">Skapad %s</string>
+    <string name="credits">Utvecklare:\nRoman Mašek\nVit Hnilica\nMartin Sobola\nMartin Helff</string>
+    <string name="delete_folder">Ta bort mapp</string>
+    <string name="delete_folder_confirm">Är du säker på att du vill ta bort den här mappen?</string>
+    <string name="delete_folder_title">Ta bort %s</string>
+    <string name="delete_puzzle">Ta bort pussel</string>
+    <string name="delete_puzzle_confirm">Är du säker på att du vill ta bort det markerade pusslet?</string>
+    <string name="difficulty_easy">Enkel</string>
+    <string name="difficulty_hard">Svår</string>
+    <string name="difficulty_medium">Mellan</string>
+    <string name="directory">Mapp</string>
+    <string name="edit_note">Välj notering</string>
+    <string name="edit_puzzle">Redigera pussel</string>
+    <string name="edit_sudoku">Redigera sudoku</string>
+    <string name="email">E-post: opensudoku@romanmasek.cz</string>
+    <string name="export">Exportera</string>
+    <string name="export_all_folders">Exportera alla mappar</string>
+    <string name="export_folder">Exportera mapp</string>
+    <string name="exporting">Exporterar pussel...</string>
+    <string name="file_exists">Filen finns redan, vill du skriva över den?</string>
+    <string name="filename">Filnamn</string>
+    <string name="fill_in_notes">Fyll i anteckningar</string>
+    <string name="filter">Filtrera</string>
+    <string name="filter_active">Filtrerade: %s</string>
+    <string name="filter_by_gamestate">Filtrera på spelstatus</string>
+    <string name="first_run_hint">Det finns fler sätt att mata in nummer, för att hjälpa dig komma igång kommer vi visa
+		hjälptexter medans du går igenom alla sätten.\n\nDu kan stänga av dessa hjälptexter i spelinställningarna.\n</string>
+    <string name="folders">Mappar</string>
+    <string name="folders_created">%s mappar har importerats.</string>
+    <string name="game">Spelomgång</string>
+    <string name="game_helpers">Spelhjälp</string>
+    <string name="game_settings">Spelinställningar</string>
+    <string name="generate_sudoku">Generiere neues Sudoku</string>
+    <string name="generating">Generiere Sudoku-Rätsel...</string>
+    <string name="get_more_puzzles_online">Hämta fler pussel online</string>
+    <string name="help">Hjälp</string>
+    <string name="help_text"><b>Tangentbordsinmatning</b>\n\nAnvänd rull-hjulet för att navigera till den önskade rutan
+		och klicka på nummret på tangentbordet för att fylla i värdet. Om du vill anteckna ett nummer håller du nere
+		shift eller alt samtidigt som du matar in nummret.\n\n<b>Inmatningssätt</b>\n\nDu kan välja mellan fler olika
+		inmatningssätt genom att klicka på knappen längst ner till höger på skärmen. Du kan också stänga av de
+		inmatningssätt du inte vill använda i spelinställningarna.\n\n<b>Popupläge</b>\n\nÖppnar en ruta när du klickar
+		på en ruta där du kan välja nummer och anteckningar.\n\n<b>Enkelt nummer</b>\n\nFörst väljer du nummer genom att
+		klicka på respektive sifferknapp, efter det klickar du direkt på den ruta du vill sätta eller anteckna nummret
+		i.\n\nAnvänd<i>Penn-knappen</i>		för att växla mellan anteckningsläge och skrivläge.\n\n<b>Numeriskt tangentbord</b>\n\nKnapparna fungerar precis
+		som på ett vanligt numeriskt tangentbord.\n\nAnvänd<i>Penn-knappen</i>		för att växla mellan anteckningsläge och skrivläge.\n</string>
+    <string name="highlight_completed_values">Markera färdiga nummer</string>
+    <string name="highlight_completed_values_summary">Markera de nummer som använts 9 gånger.</string>
+    <string name="highlight_touched_cell">Markera ruta vid tryck</string>
+    <string name="highlight_touched_cell_summary">Indikera raden och kolumnen för den ruta som precis tryckts ner.</string>
+    <string name="highlight_wrong_values">Markera felaktiga nummer</string>
+    <string name="highlight_wrong_values_summary">Markera värden som bryter mot sudokureglerna.</string>
+    <string name="hint">Hjälp</string>
+    <string name="homepage">Webbsida: http://opensudoku.eu</string>
+    <string name="im_disable_modes_hint">Kom ihåg att du inte behöver använda alla inmatningssätt, du kan stänga av de
+		du inte vill använda i spelinställningarna.\n\nDu kan också använda tangentbordet och rullhjulet för att styra
+		spelet, om du vill anteckna nummer håller du nere shift- eller alt-knappen samtidigt som du trycker på
+		nummerknappen.\n</string>
+    <string name="im_numpad_hint">Du är nu i läget<i>Numeriskt tangentbord</i>. Knapparna fungerar som ett vanligt
+		numeriskt tangentbord. \n\nTryck på<i>Penn-knappen</i>		för att växla mellan anteckningsläge och skrivläge.\n</string>
+    <string name="im_popup_hint">Du är nu i läget<i>Popup</i>. Klicka på en av rutorna för att välja nummer.\n\nNotera
+		knappen nere i högra hörnet, den används för att växla till nästa inmatningssätt.\n</string>
+    <string name="im_single_number_hint">Du är nu i läget<i>Enkelt nummer</i>. Först väljer du nummer genom att klicka
+		på respektive knapp nedan, sen klickar du på den ruta du vill använda nummret.\n\nTryck på<i>Penn-knappen</i>		för att växla mellan anteckningsläge och skrivläge.\n</string>
+    <string name="importing">Importerar pussel...</string>
+    <string name="input_methods">Inmatningsläge</string>
+    <string name="invalid_format">Felaktigt format, inläsningen avbröts.</string>
+    <string name="last_played_at">Senast spelad %s</string>
+    <string name="loading">Laddar...</string>
+    <string name="more_settings">Fler inställningar</string>
+    <string name="n_playing">%s påbörjade</string>
+    <string name="n_puzzles">%s pussel</string>
+    <string name="n_solved">%s lösta</string>
+    <string name="n_unsolved">%s ej lösta</string>
+    <string name="name">Namn:</string>
+    <string name="no_puzzles">Inga pussel</string>
+    <string name="no_puzzles_found">Inga pussel hittades.</string>
+    <string name="not_started">Ej påbörjad</string>
+    <string name="note">Notering:</string>
+    <string name="numpad">Numeriskt tangentbord</string>
+    <string name="numpad_abbr">Num\ntgb</string>
+    <string name="numpad_move_right">Flytta automatiskt</string>
+    <string name="numpad_move_right_summary">Flytta till nästa nummer automatiskt.</string>
+    <string name="numpad_summary">Visa det numeriska tangentbordet.</string>
+    <string name="on_date">%s</string>
+    <string name="one_puzzle">Ett pussel</string>
+    <string name="play_puzzle">Påbörja det här pusslet</string>
+    <string name="playing">Påbörjad</string>
+    <string name="popup">Popup</string>
+    <string name="popup_abbr">Pop</string>
+    <string name="popup_summary">Redigera nummer och anteckning i en popup.</string>
+    <string name="puzzle_folders">OpenSudoku - mappar</string>
+    <string name="puzzle_inserted">Nya pussel har sparats.</string>
+    <string name="puzzle_updated">Pusslet har uppdaterats.</string>
+    <string name="puzzles_have_been_exported">Pusslen har exporterats till %s.</string>
+    <string name="puzzles_saved">Pusslen har sparats till mappen \'%s\'.</string>
+    <string name="rename_folder">Döp om mapp</string>
+    <string name="rename_folder_title">Döp om %s</string>
+    <string name="reset_puzzle">Återställ pussel</string>
+    <string name="reset_puzzle_confirm">Är du säker på att du vill återställa det markerade pusslet?</string>
+    <string name="restart">Starta om</string>
+    <string name="restart_confirm">Är du säker på att du vill starta om det här spelet?</string>
+    <string name="save">Spara</string>
+    <string name="save_to_sdcard">Spara till SD-kort</string>
+    <string name="screen_border_size">Storlek på skärmkant</string>
+    <string name="screen_border_size_summary">Vissa pekskärmar reagerar inte närmast kanterna, Den här inställningen kan
+		hjälpa till att motverka detta.</string>
+    <string name="sdcard_not_found">SD-kort kunde inte hittas.</string>
+    <string name="select_difficulty">Schwierigkeit auswählen</string>
+    <string name="select_number">Välj nummer</string>
+    <string name="select_theme">Välj tema</string>
+    <string name="send_by_mail">Skicka via e-post</string>
+    <string name="send_me_bugs">Om du stöter på en bugg du vill ha fixad eller har några förslag, tveka inte att
+		kontakta oss via e-post eller använd ärendehanteringssystemet på projektets hemsida.</string>
+    <string name="settings">Inställningar</string>
+    <string name="show_hints">Kom igång</string>
+    <string name="show_hints_summary">Visa hjälp som guidar dig igenom spelet.</string>
+    <string name="show_time">Visa tid</string>
+    <string name="show_time_summary">Visa förbrukad tid i spelet.</string>
+    <string name="single_number">Enkelt nummer</string>
+    <string name="single_number_abbr">Enk\nnum</string>
+    <string name="single_number_summary">Välj nummer, sen klickar du på en ruta för att sätta nummret eller
+		anteckningen.</string>
+    <string name="solved">Löst</string>
+    <string name="that_is_all">Det är allt!</string>
+    <string name="theme">Tema</string>
+    <string name="theme_summary">Välj färgschema för spelplanen/pusslet.</string>
+    <string name="undo">Ångra</string>
+    <string name="unknown_export_error">Okänt fel uppstod vid pusselexport.</string>
+    <string name="unknown_import_error">Ett okänt fel inträffade under inläsningen av pussel, inläsningen avbröts.</string>
+    <string name="version">Version: %s</string>
+    <string name="welcome">Välkommen</string>
+    <string name="well_done">Bra gjort!</string>
+    <string name="work_in_progress">Detta är ett program under utveckling.</string>
+    <string name="yesterday_at_time">igår, klockan %s</string>
+
+</resources>

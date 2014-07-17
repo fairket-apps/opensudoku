@@ -1,0 +1,170 @@
+#
+# generated on 2014/07/06 02:40:17
+#
+# --table-start--
+dataClass=com.bhulok.sdk.android.model.data.App
+tableName=app
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=storeId
+uniqueCombo=true
+# --field-end--
+# --field-start--
+fieldName=appId
+uniqueCombo=true
+# --field-end--
+# --field-start--
+fieldName=developerId
+uniqueCombo=true
+# --field-end--
+# --field-start--
+fieldName=name
+# --field-end--
+# --field-start--
+fieldName=developerName
+# --field-end--
+# --field-start--
+fieldName=status
+# --field-end--
+# --field-start--
+fieldName=description
+# --field-end--
+# --field-start--
+fieldName=subscribed
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.bhulok.sdk.android.model.data.AppAuthResponse
+tableName=appauthresponse
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=developerId
+columnName=developerId
+canBeNull=false
+uniqueCombo=true
+# --field-end--
+# --field-start--
+fieldName=appId
+columnName=appId
+canBeNull=false
+uniqueCombo=true
+# --field-end--
+# --field-start--
+fieldName=storeId
+columnName=storeId
+canBeNull=false
+uniqueCombo=true
+# --field-end--
+# --field-start--
+fieldName=challengeSignature
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=appKeyDigest
+columnName=appKeyDigest
+canBeNull=false
+uniqueIndexName=appauthresponse_appKeyDigest_idx
+# --field-end--
+# --field-start--
+fieldName=installerPackageName
+# --field-end--
+# --field-start--
+fieldName=payload
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.bhulok.sdk.android.model.data.AvailableUnit
+tableName=availableunit
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=developerId
+columnName=developerId
+canBeNull=false
+uniqueCombo=true
+# --field-end--
+# --field-start--
+fieldName=appId
+columnName=appId
+canBeNull=false
+uniqueCombo=true
+# --field-end--
+# --field-start--
+fieldName=storeId
+columnName=storeId
+canBeNull=false
+uniqueCombo=true
+# --field-end--
+# --field-start--
+fieldName=productId
+canBeNull=false
+uniqueCombo=true
+# --field-end--
+# --field-start--
+fieldName=paidUnits
+# --field-end--
+# --field-start--
+fieldName=creditUnits
+# --field-end--
+# --field-start--
+fieldName=maxAllowedUnits
+# --field-end--
+# --field-start--
+fieldName=planRemainingUnits
+# --field-end--
+# --field-start--
+fieldName=expiryTime
+# --field-end--
+# --field-start--
+fieldName=availUnits
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.bhulok.sdk.android.model.data.ConsumeEvent
+tableName=consumeevent
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=developerId
+# --field-end--
+# --field-start--
+fieldName=eventTime
+# --field-end--
+# --field-start--
+fieldName=transactionId
+# --field-end--
+# --field-start--
+fieldName=storeId
+# --field-end--
+# --field-start--
+fieldName=appId
+# --field-end--
+# --field-start--
+fieldName=productId
+# --field-end--
+# --field-start--
+fieldName=consumedUnits
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################

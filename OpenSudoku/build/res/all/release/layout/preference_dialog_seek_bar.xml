@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/seek_bar_container"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:padding="5dip"
+		android:orientation="vertical">
+	<TextView android:id="@+id/value"
+			  android:layout_width="fill_parent"
+			  android:layout_height="wrap_content"
+			  android:text="halo"/>
+</LinearLayout>
+<!-- From: file:/Users/lohith/root/work/tappora/git/fairket-lohith-github/opensudoku/OpenSudoku/res/layout/preference_dialog_seek_bar.xml -->

@@ -20,8 +20,9 @@
 
 package cz.romario.opensudoku.game;
 
-import com.fairket.app.opensudoku.R;
 import android.content.Context;
+
+import com.fairket.app.opensudoku.R;
 
 /**
  * Some information about folder, used in FolderListActivity.

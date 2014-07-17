@@ -1,0 +1,7 @@
+<com.bhulok.sdk.android.ux.PlanListView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/planListView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp" />
+<!-- From: file:/Users/lohith/root/work/tappora/git/bhulok/bl_android_app_kitty/BhulokCommonSDK/res/layout/plan_list_fragment.xml -->

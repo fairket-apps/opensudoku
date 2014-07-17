@@ -2,12 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fairket.app.opensudoku"
     android:installLocation="auto"
-    android:versionCode="1105"
-    android:versionName="1.1.5" >
+    android:versionCode="2"
+    android:versionName="1.0.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="4" />
+        android:minSdkVersion="9"
+        android:targetSdkVersion="19" />
 
     <application
         android:icon="@drawable/opensudoku_logo_72"

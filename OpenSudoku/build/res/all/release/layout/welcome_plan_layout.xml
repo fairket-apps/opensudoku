@@ -1,0 +1,23 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <include layout="@layout/header_layout" />
+
+    <com.bhulok.sdk.android.ux.PlanListView
+        android:id="@+id/planListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/imgFooter"
+        android:layout_below="@id/grpHeader" />
+
+    <ImageView
+        android:id="@+id/imgFooter"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_fairket_footer_2" />
+
+</RelativeLayout><!-- From: file:/Users/lohith/root/work/tappora/git/bhulok/bl_android_app_kitty/BhulokCommonSDK/res/layout/welcome_plan_layout.xml --><!-- From: file:/Users/lohith/root/work/tappora/git/fairket-lohith-github/opensudoku/OpenSudoku/build/exploded-bundles/OpenSudokuBhulokCommonSDKUnspecified.aar/res/layout/welcome_plan_layout.xml -->

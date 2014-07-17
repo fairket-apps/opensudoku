@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <include layout="@layout/header_layout" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/grpHeader" >
+
+        <TextView
+            android:id="@+id/txtMsg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/grpButtons"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textSize="17sp" />
+
+        <LinearLayout
+            android:id="@+id/grpButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/btnLeft"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/border"
+                android:text="@string/lock_later_action"
+                android:textColor="@color/fairket_white"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/btnRight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/border"
+                android:textColor="@color/fairket_white"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout><!-- From: file:/Users/lohith/root/work/tappora/git/bhulok/bl_android_app_kitty/BhulokCommonSDK/res/layout/dialog_activity_layout.xml -->

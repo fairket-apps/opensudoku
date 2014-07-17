@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="20dp" >
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="Fairket Credits"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView2"
+        android:text="Visa-XXXX"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#6E6E6E" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="Rs. 5.00"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#01A9DB" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="This is test order, you will not be charged."
+        android:textColor="@color/fairket_red"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:text="Fairket"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:id="@+id/btnBuy"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@color/fairket_bg"
+        android:onClick="onBuy"
+        android:text="Buy" />
+
+</RelativeLayout><!-- From: file:/Users/lohith/root/work/tappora/git/bhulok/bl_android_app_kitty/BhulokCommonSDK/res/layout/test_iap_layout.xml --><!-- From: file:/Users/lohith/root/work/tappora/git/fairket-lohith-github/opensudoku/OpenSudoku/build/exploded-bundles/OpenSudokuBhulokCommonSDKUnspecified.aar/res/layout/test_iap_layout.xml -->

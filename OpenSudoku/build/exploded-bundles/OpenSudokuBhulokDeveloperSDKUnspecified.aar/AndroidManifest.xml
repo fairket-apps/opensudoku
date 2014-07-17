@@ -1,0 +1,29 @@
+<!-- From: file:/Users/lohith/root/work/tappora/git/bhulok/bl_android_sdk/BhulokDeveloperSDK/AndroidManifest.xml -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.fairket.sdk.android">
+
+    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="19"/>
+
+    <application android:allowBackup="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:theme="@style/AppTheme">
+        <meta-data android:name="FAIRKET_SDK_KEY" android:value="FairketApp"/>
+
+        <activity android:launchMode="singleTask" android:name="com.bhulok.sdk.android.ux.WelcomeActivity" android:theme="@style/Theme.Bhulok.Dialog">
+        </activity>
+        <activity android:name="com.fairket.sdk.android.LockActivity" android:theme="@style/Theme.Bhulok.Dialog">
+        </activity>
+        <!-- From: file:/var/folders/6n/d6vc4hjd0ms8clmqbxxwjb600000gn/T/manifestMerge3734323682809690634.xml -->
+        <activity android:name="com.bhulok.sdk.android.model.iap.test.TestIAPActivity" android:screenOrientation="portrait" android:theme="@style/Theme.Bhulok.Dialog">
+        </activity>
+        <activity android:label="Fairket Metered App" android:name="com.bhulok.sdk.android.ux.StatsDialogActivity" android:theme="@style/Theme.Bhulok.Dialog">
+        </activity>
+
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
+        <!-- From: file:/Users/lohith/root/work/tappora/git/bhulok/bl_android_sdk/BhulokDeveloperSDK/AndroidManifest.xml -->
+        
+    </application>
+
+    <!-- From: file:/var/folders/6n/d6vc4hjd0ms8clmqbxxwjb600000gn/T/manifestMerge3734323682809690634.xml -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- From: file:/Users/lohith/root/work/tappora/git/bhulok/bl_android_sdk/BhulokDeveloperSDK/AndroidManifest.xml -->
+    
+
+</manifest>

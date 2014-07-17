@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger>
+
+    <dataSet config="OpenSudokuConfigHandlerUnspecified.aar" >
+        <source path="/Users/lohith/root/work/tappora/git/fairket-lohith-github/opensudoku/OpenSudoku/build/exploded-bundles/OpenSudokuConfigHandlerUnspecified.aar/assets" />
+    </dataSet>
+    <dataSet config="ComAndroidSupportAppcompatV71800.aar" >
+        <source path="/Users/lohith/root/work/tappora/git/fairket-lohith-github/opensudoku/OpenSudoku/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/assets" />
+    </dataSet>
+    <dataSet config="OpenSudokuBhulokCommonSDKUnspecified.aar" >
+        <source path="/Users/lohith/root/work/tappora/git/fairket-lohith-github/opensudoku/OpenSudoku/build/exploded-bundles/OpenSudokuBhulokCommonSDKUnspecified.aar/assets" />
+    </dataSet>
+    <dataSet config="OpenSudokuBhulokDeveloperSDKUnspecified.aar" >
+        <source path="/Users/lohith/root/work/tappora/git/fairket-lohith-github/opensudoku/OpenSudoku/build/exploded-bundles/OpenSudokuBhulokDeveloperSDKUnspecified.aar/assets" />
+    </dataSet>
+    <dataSet config="main" >
+        <source path="/Users/lohith/root/work/tappora/git/fairket-lohith-github/opensudoku/OpenSudoku/assets" />
+    </dataSet>
+    <dataSet config="release" >
+        <source path="/Users/lohith/root/work/tappora/git/fairket-lohith-github/opensudoku/OpenSudoku/src/release/assets" />
+    </dataSet>
+
+</merger>

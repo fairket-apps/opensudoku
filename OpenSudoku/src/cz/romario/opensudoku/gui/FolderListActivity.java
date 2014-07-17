@@ -44,6 +44,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 import android.widget.TextView;
 
+import com.bhulok.sdk.android.util.Util;
 import com.fairket.app.opensudoku.R;
 import com.fairket.sdk.android.FairketApiClient;
 import com.fairket.sdk.android.FairketHelperForGingerbread;
@@ -63,11 +64,12 @@ import cz.romario.opensudoku.utils.AndroidUtils;
 public class FolderListActivity extends ListActivity {
 
 	public static final String FAIRKET_LOG = "SUDOKU-FairketApiClient";
-	
-	//Dev server key
-	public static final String FAIRKET_APP_PUB_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy5m7I8+f4O+9G0d8QVITG79fJzWoEFcu5IQtLlLwbv82d5dVvs6dbWigTLgr2Z6LdydoLTEaoWFAm+6oiMrcnEELfUh0hhQGZ7ACntA0+ogcEBKJaCWV9LouwLHRj6M1a9Ig/O40irDrq6G/+p7ZKnG5xhZuElSqMXR8cgIf2QNko6bjMGgo97wt0YKaoyNalK/HpcgSyUVjwFGLnKvxddz57Ojino59e8dXNOAJPeyAn8c5OkDIE5bRoXiZvWFTL3Ir9p3Ih4Gn6mqTgT2LJdTFcxd8qbbbAbSWN/ppzjeI/vSqf7Hp37GwZiNpYyCQuBWEQ0lVoRm9V99IhLAfDQIDAQAB";
-	//Prod server key
-	//public static final String FAIRKET_APP_PUB_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhbrBvLv0jObVMp5gojh3Pz95L15SAo3Va0xD+gT+Q4G2f3O13TY7b5XpQUw8QmIGt/UWg0tMDr/VeG8qOpBcIzbpp4brYrhvNnycnVL5+Q4nrcfN4VNaiXHJF88za4rcHWfyXh40DwQ0PZEq6TruCVaP7zpHvk2ymMud9n4y4kYF0sR/Rv/1VV+Sv7XWVceM/bVw7TIazzUJHgmRSFYBXauJ5XHD4i59tG6s8TsLF6ZxiCQlVEQ7frvGBJBsh28gj+jwXpnYFIfaQo7+l0kwCBh/vsOkITj8cBGoqlyg28uKBXI+/UXVMi8vUFos06lp4qida/2PmjqRXP+sqpzE7QIDAQAB";
+
+	// Dev server key
+	// public static final String FAIRKET_APP_PUB_KEY =
+	// "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy5m7I8+f4O+9G0d8QVITG79fJzWoEFcu5IQtLlLwbv82d5dVvs6dbWigTLgr2Z6LdydoLTEaoWFAm+6oiMrcnEELfUh0hhQGZ7ACntA0+ogcEBKJaCWV9LouwLHRj6M1a9Ig/O40irDrq6G/+p7ZKnG5xhZuElSqMXR8cgIf2QNko6bjMGgo97wt0YKaoyNalK/HpcgSyUVjwFGLnKvxddz57Ojino59e8dXNOAJPeyAn8c5OkDIE5bRoXiZvWFTL3Ir9p3Ih4Gn6mqTgT2LJdTFcxd8qbbbAbSWN/ppzjeI/vSqf7Hp37GwZiNpYyCQuBWEQ0lVoRm9V99IhLAfDQIDAQAB";
+	// Prod server key
+	public static final String FAIRKET_APP_PUB_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhbrBvLv0jObVMp5gojh3Pz95L15SAo3Va0xD+gT+Q4G2f3O13TY7b5XpQUw8QmIGt/UWg0tMDr/VeG8qOpBcIzbpp4brYrhvNnycnVL5+Q4nrcfN4VNaiXHJF88za4rcHWfyXh40DwQ0PZEq6TruCVaP7zpHvk2ymMud9n4y4kYF0sR/Rv/1VV+Sv7XWVceM/bVw7TIazzUJHgmRSFYBXauJ5XHD4i59tG6s8TsLF6ZxiCQlVEQ7frvGBJBsh28gj+jwXpnYFIfaQo7+l0kwCBh/vsOkITj8cBGoqlyg28uKBXI+/UXVMi8vUFos06lp4qida/2PmjqRXP+sqpzE7QIDAQAB";
 
 	public static final int MENU_ITEM_ADD = Menu.FIRST;
 	public static final int MENU_ITEM_RENAME = Menu.FIRST + 1;
@@ -145,6 +147,7 @@ public class FolderListActivity extends ListActivity {
 	protected void onStart() {
 		super.onStart();
 
+		System.out.println("Sudoku start");
 		updateList();
 	}
 
@@ -152,6 +155,7 @@ public class FolderListActivity extends ListActivity {
 	protected void onResume() {
 		super.onResume();
 
+		System.out.println("Sudoku resume");
 		FairketHelperForGingerbread.onResume(mFairket);
 	}
 

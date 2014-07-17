@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view_flipper"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.bhulok.sdk.android.ux.WelcomeGestureView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.bhulok.sdk.android.ux.WelcomePlanView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</ViewFlipper><!-- From: file:/Users/lohith/root/work/tappora/git/bhulok/bl_android_app_kitty/BhulokCommonSDK/res/layout/welcome_view_flipper_layout.xml --><!-- From: file:/Users/lohith/root/work/tappora/git/fairket-lohith-github/opensudoku/OpenSudoku/build/exploded-bundles/OpenSudokuBhulokCommonSDKUnspecified.aar/res/layout/welcome_view_flipper_layout.xml -->
