@@ -41,7 +41,7 @@ import android.widget.TextView;
 
 import com.fairket.app.opensudoku.R;
 import com.fairket.sdk.android.FairketApiClient;
-import com.fairket.sdk.android.FairketHelperForGingerbread;
+import com.fairket.sdk.android.FairketAppTimeHelper;
 
 import cz.romario.opensudoku.db.SudokuDatabase;
 import cz.romario.opensudoku.game.SudokuGame;
@@ -174,7 +174,7 @@ public class SudokuPlayActivity extends Activity {
 		mIMNumpad = mIMControlPanel
 				.getInputMethod(IMControlPanel.INPUT_METHOD_NUMPAD);
 		// FairketApiClient Integration
-		mFairket = FairketHelperForGingerbread.onCreate(this, FolderListActivity.FAIRKET_APP_PUB_KEY, FolderListActivity.FAIRKET_LOG);
+		mFairket = FairketAppTimeHelper.onCreate(this, FolderListActivity.FAIRKET_APP_PUB_KEY, FolderListActivity.FAIRKET_LOG);
 	}
 
 	@Override
@@ -233,7 +233,7 @@ public class SudokuPlayActivity extends Activity {
 
 		updateTime();
 
-		FairketHelperForGingerbread.onResume(mFairket);
+		FairketAppTimeHelper.onResume(mFairket);
 	}
 
 	@Override
@@ -271,7 +271,7 @@ public class SudokuPlayActivity extends Activity {
 		mIMControlPanel.pause();
 		mIMControlPanelStatePersister.saveState(mIMControlPanel);
 
-		FairketHelperForGingerbread.onPause(mFairket);
+		FairketAppTimeHelper.onPause(mFairket);
 	}
 
 	@Override
@@ -280,7 +280,7 @@ public class SudokuPlayActivity extends Activity {
 
 		mDatabase.close();
 
-		FairketHelperForGingerbread.onDestroy(mFairket);
+		FairketAppTimeHelper.onDestroy(mFairket);
 	}
 
 	@Override

@@ -28,7 +28,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -39,15 +38,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.SimpleCursorAdapter.ViewBinder;
 import android.widget.TextView;
 
-import com.bhulok.sdk.android.util.Util;
 import com.fairket.app.opensudoku.R;
 import com.fairket.sdk.android.FairketApiClient;
-import com.fairket.sdk.android.FairketHelperForGingerbread;
+import com.fairket.sdk.android.FairketException;
+import com.fairket.sdk.android.FairketAppTimeHelper;
+import com.fairket.sdk.android.FairketResult;
 
 import cz.romario.opensudoku.db.FolderColumns;
 import cz.romario.opensudoku.db.SudokuDatabase;
@@ -66,10 +67,11 @@ public class FolderListActivity extends ListActivity {
 	public static final String FAIRKET_LOG = "SUDOKU-FairketApiClient";
 
 	// Dev server key
-	// public static final String FAIRKET_APP_PUB_KEY =
-	// "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy5m7I8+f4O+9G0d8QVITG79fJzWoEFcu5IQtLlLwbv82d5dVvs6dbWigTLgr2Z6LdydoLTEaoWFAm+6oiMrcnEELfUh0hhQGZ7ACntA0+ogcEBKJaCWV9LouwLHRj6M1a9Ig/O40irDrq6G/+p7ZKnG5xhZuElSqMXR8cgIf2QNko6bjMGgo97wt0YKaoyNalK/HpcgSyUVjwFGLnKvxddz57Ojino59e8dXNOAJPeyAn8c5OkDIE5bRoXiZvWFTL3Ir9p3Ih4Gn6mqTgT2LJdTFcxd8qbbbAbSWN/ppzjeI/vSqf7Hp37GwZiNpYyCQuBWEQ0lVoRm9V99IhLAfDQIDAQAB";
+	public static final String FAIRKET_APP_PUB_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy5m7I8+f4O+9G0d8QVITG79fJzWoEFcu5IQtLlLwbv82d5dVvs6dbWigTLgr2Z6LdydoLTEaoWFAm+6oiMrcnEELfUh0hhQGZ7ACntA0+ogcEBKJaCWV9LouwLHRj6M1a9Ig/O40irDrq6G/+p7ZKnG5xhZuElSqMXR8cgIf2QNko6bjMGgo97wt0YKaoyNalK/HpcgSyUVjwFGLnKvxddz57Ojino59e8dXNOAJPeyAn8c5OkDIE5bRoXiZvWFTL3Ir9p3Ih4Gn6mqTgT2LJdTFcxd8qbbbAbSWN/ppzjeI/vSqf7Hp37GwZiNpYyCQuBWEQ0lVoRm9V99IhLAfDQIDAQAB";
 	// Prod server key
-	public static final String FAIRKET_APP_PUB_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhbrBvLv0jObVMp5gojh3Pz95L15SAo3Va0xD+gT+Q4G2f3O13TY7b5XpQUw8QmIGt/UWg0tMDr/VeG8qOpBcIzbpp4brYrhvNnycnVL5+Q4nrcfN4VNaiXHJF88za4rcHWfyXh40DwQ0PZEq6TruCVaP7zpHvk2ymMud9n4y4kYF0sR/Rv/1VV+Sv7XWVceM/bVw7TIazzUJHgmRSFYBXauJ5XHD4i59tG6s8TsLF6ZxiCQlVEQ7frvGBJBsh28gj+jwXpnYFIfaQo7+l0kwCBh/vsOkITj8cBGoqlyg28uKBXI+/UXVMi8vUFos06lp4qida/2PmjqRXP+sqpzE7QIDAQAB";
+	// public static final String FAIRKET_APP_PUB_KEY =
+	// "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhbrBvLv0jObVMp5gojh3Pz95L15SAo3Va0xD+gT+Q4G2f3O13TY7b5XpQUw8QmIGt/UWg0tMDr/VeG8qOpBcIzbpp4brYrhvNnycnVL5+Q4nrcfN4VNaiXHJF88za4rcHWfyXh40DwQ0PZEq6TruCVaP7zpHvk2ymMud9n4y4kYF0sR/Rv/1VV+Sv7XWVceM/bVw7TIazzUJHgmRSFYBXauJ5XHD4i59tG6s8TsLF6ZxiCQlVEQ7frvGBJBsh28gj+jwXpnYFIfaQo7+l0kwCBh/vsOkITj8cBGoqlyg28uKBXI+/UXVMi8vUFos06lp4qida/2PmjqRXP+sqpzE7QIDAQAB";
+	private FairketApiClient mFairket;
 
 	public static final int MENU_ITEM_ADD = Menu.FIRST;
 	public static final int MENU_ITEM_RENAME = Menu.FIRST + 1;
@@ -96,27 +98,41 @@ public class FolderListActivity extends ListActivity {
 	private long mRenameFolderID;
 	private long mDeleteFolderID;
 
-	private FairketApiClient mFairket;
+	private Button mBtnRemoveAds;
+
+	private Button mBtnAdsHere;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.folder_list);
-		View getMorePuzzles = (View) findViewById(R.id.get_more_puzzles);
+		mBtnRemoveAds = (Button) findViewById(R.id.btnRemoveAds);
+		mBtnAdsHere = (Button) findViewById(R.id.btnAdsHere);
 
 		setDefaultKeyMode(DEFAULT_KEYS_SHORTCUT);
 		// Inform the list we provide context menus for items
 		getListView().setOnCreateContextMenuListener(this);
 
-		getMorePuzzles.setOnClickListener(new OnClickListener() {
+		mBtnRemoveAds.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(
-						Intent.ACTION_VIEW,
-						Uri.parse("http://code.google.com/p/opensudoku-android/wiki/Puzzles"));
-				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				startActivity(intent);
+				// Intent intent = new Intent(
+				// Intent.ACTION_VIEW,
+				// Uri.parse("http://code.google.com/p/opensudoku-android/wiki/Puzzles"));
+				// intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				// startActivity(intent);
+
+				mFairket.startPlanSubscribeFlow(FolderListActivity.this,
+						FairketApiClient.PRODUCT_APPTIME,
+						new FairketApiClient.OnPlanSubscribeListener() {
+
+							@Override
+							public void onPlanSubscribeFinished(
+									FairketResult result) {
+								fairketChkForFreePlan();
+							}
+						});
 			}
 		});
 
@@ -137,7 +153,7 @@ public class FolderListActivity extends ListActivity {
 		changelog.showOnFirstRun();
 
 		// FairketApiClient Integration
-		mFairket = FairketHelperForGingerbread.onCreate(this,
+		mFairket = FairketAppTimeHelper.onCreate(this,
 				FolderListActivity.FAIRKET_APP_PUB_KEY,
 				FolderListActivity.FAIRKET_LOG);
 
@@ -156,14 +172,43 @@ public class FolderListActivity extends ListActivity {
 		super.onResume();
 
 		System.out.println("Sudoku resume");
-		FairketHelperForGingerbread.onResume(mFairket);
+		FairketAppTimeHelper.onResume(mFairket,
+				new FairketApiClient.OnInitializeListener() {
+
+					@Override
+					public void onInitializeFinished(FairketResult result) {
+						fairketChkForFreePlan();
+					}
+
+				});
+	}
+
+	private void fairketChkForFreePlan() {
+		// Check if the subscribed to free plan
+		mFairket.isFreePlanSubscribedAsync(FairketApiClient.PRODUCT_APPTIME,
+				new FairketApiClient.OnAsyncOperationListener() {
+
+					@Override
+					public void onAsyncOperationFinished(FairketResult result) {
+						Log.d(FAIRKET_LOG, "isFreePlanSubscribedAsync: "
+								+ result.isSuccess());
+						int visibility;
+						if (result.isSuccess()) {
+							visibility = View.VISIBLE;
+						} else {
+							visibility = View.GONE;
+						}
+						mBtnAdsHere.setVisibility(visibility);
+						mBtnRemoveAds.setVisibility(visibility);
+					}
+				});
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
 
-		FairketHelperForGingerbread.onPause(mFairket);
+		FairketAppTimeHelper.onPause(mFairket);
 	}
 
 	@Override
@@ -172,7 +217,7 @@ public class FolderListActivity extends ListActivity {
 		mDatabase.close();
 		mFolderListBinder.destroy();
 
-		FairketHelperForGingerbread.onDestroy(mFairket);
+		FairketAppTimeHelper.onDestroy(mFairket);
 
 	}
 
@@ -451,6 +496,17 @@ public class FolderListActivity extends ListActivity {
 
 		public void destroy() {
 			mDetailLoader.destroy();
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		try {
+			mFairket.onActivityResult(requestCode, resultCode, data);
+		} catch (Exception e) {
+			Log.wtf(FAIRKET_LOG, e);
 		}
 	}
 

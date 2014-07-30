@@ -47,7 +47,7 @@ import android.widget.TextView;
 
 import com.fairket.app.opensudoku.R;
 import com.fairket.sdk.android.FairketApiClient;
-import com.fairket.sdk.android.FairketHelperForGingerbread;
+import com.fairket.sdk.android.FairketAppTimeHelper;
 
 /**
  * List folders.
@@ -143,7 +143,7 @@ public class FileListActivity extends ListActivity {
 		setListAdapter(adapter);
 
 		// FairketApiClient Integration
-		mFairket = FairketHelperForGingerbread.onCreate(this,
+		mFairket = FairketAppTimeHelper.onCreate(this,
 				FolderListActivity.FAIRKET_APP_PUB_KEY,
 				FolderListActivity.FAIRKET_LOG);
 	}
@@ -152,14 +152,14 @@ public class FileListActivity extends ListActivity {
 	protected void onResume() {
 		super.onResume();
 
-		FairketHelperForGingerbread.onResume(mFairket);
+		FairketAppTimeHelper.onResume(mFairket);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
 
-		FairketHelperForGingerbread.onPause(mFairket);
+		FairketAppTimeHelper.onPause(mFairket);
 	}
 
 	@Override
@@ -171,7 +171,7 @@ public class FileListActivity extends ListActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 
-		FairketHelperForGingerbread.onDestroy(mFairket);
+		FairketAppTimeHelper.onDestroy(mFairket);
 	}
 
 	@Override

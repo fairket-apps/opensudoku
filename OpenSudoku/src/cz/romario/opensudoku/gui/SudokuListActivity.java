@@ -51,7 +51,7 @@ import android.widget.TextView;
 
 import com.fairket.app.opensudoku.R;
 import com.fairket.sdk.android.FairketApiClient;
-import com.fairket.sdk.android.FairketHelperForGingerbread;
+import com.fairket.sdk.android.FairketAppTimeHelper;
 
 import cz.romario.opensudoku.db.SudokuColumns;
 import cz.romario.opensudoku.db.SudokuDatabase;
@@ -156,14 +156,14 @@ public class SudokuListActivity extends ListActivity {
 		updateList();
 		setListAdapter(mAdapter);
 		// FairketApiClient Integration
-		mFairket = FairketHelperForGingerbread.onCreate(this, FolderListActivity.FAIRKET_APP_PUB_KEY, FolderListActivity.FAIRKET_LOG);
+		mFairket = FairketAppTimeHelper.onCreate(this, FolderListActivity.FAIRKET_APP_PUB_KEY, FolderListActivity.FAIRKET_LOG);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
 
-		FairketHelperForGingerbread.onPause(mFairket);
+		FairketAppTimeHelper.onPause(mFairket);
 	}
 
 	@Override
@@ -172,7 +172,7 @@ public class SudokuListActivity extends ListActivity {
 
 		mDatabase.close();
 		mFolderDetailLoader.destroy();
-		FairketHelperForGingerbread.onDestroy(mFairket);
+		FairketAppTimeHelper.onDestroy(mFairket);
 	}
 
 	@Override
@@ -200,7 +200,7 @@ public class SudokuListActivity extends ListActivity {
 		// regains focus, so we only need to update the title
 		updateTitle();
 
-		FairketHelperForGingerbread.onResume(mFairket);
+		FairketAppTimeHelper.onResume(mFairket);
 
 	}
 

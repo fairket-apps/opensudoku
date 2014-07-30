@@ -27,7 +27,7 @@ import android.preference.PreferenceActivity;
 
 import com.fairket.app.opensudoku.R;
 import com.fairket.sdk.android.FairketApiClient;
-import com.fairket.sdk.android.FairketHelperForGingerbread;
+import com.fairket.sdk.android.FairketAppTimeHelper;
 
 public class GameSettingsActivity extends PreferenceActivity {
 
@@ -42,21 +42,21 @@ public class GameSettingsActivity extends PreferenceActivity {
 		findPreference("show_hints").setOnPreferenceChangeListener(
 				mShowHintsChanged);
 		// FairketApiClient Integration
-		mFairket = FairketHelperForGingerbread.onCreate(this, FolderListActivity.FAIRKET_APP_PUB_KEY, FolderListActivity.FAIRKET_LOG);
+		mFairket = FairketAppTimeHelper.onCreate(this, FolderListActivity.FAIRKET_APP_PUB_KEY, FolderListActivity.FAIRKET_LOG);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 
-		FairketHelperForGingerbread.onResume(mFairket);
+		FairketAppTimeHelper.onResume(mFairket);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
 
-		FairketHelperForGingerbread.onPause(mFairket);
+		FairketAppTimeHelper.onPause(mFairket);
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class GameSettingsActivity extends PreferenceActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 
-		FairketHelperForGingerbread.onDestroy(mFairket);
+		FairketAppTimeHelper.onDestroy(mFairket);
 
 	}
 
