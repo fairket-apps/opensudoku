@@ -1,4 +1,4 @@
-/gen
-/bin
-/build
-/.gradle
+/OpenSudoku/gen
+/OpenSudoku/bin
+/OpenSudoku/build
+/OpenSudoku/.gradle
