@@ -46,9 +46,11 @@ import android.widget.TextView;
 
 import com.fairket.app.opensudoku.R;
 import com.fairket.sdk.android.FairketApiClient;
-import com.fairket.sdk.android.FairketException;
 import com.fairket.sdk.android.FairketAppTimeHelper;
 import com.fairket.sdk.android.FairketResult;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 
 import cz.romario.opensudoku.db.FolderColumns;
 import cz.romario.opensudoku.db.SudokuDatabase;
@@ -67,10 +69,11 @@ public class FolderListActivity extends ListActivity {
 	public static final String FAIRKET_LOG = "SUDOKU-FairketApiClient";
 
 	// Dev server key
-	//public static final String FAIRKET_APP_PUB_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy5m7I8+f4O+9G0d8QVITG79fJzWoEFcu5IQtLlLwbv82d5dVvs6dbWigTLgr2Z6LdydoLTEaoWFAm+6oiMrcnEELfUh0hhQGZ7ACntA0+ogcEBKJaCWV9LouwLHRj6M1a9Ig/O40irDrq6G/+p7ZKnG5xhZuElSqMXR8cgIf2QNko6bjMGgo97wt0YKaoyNalK/HpcgSyUVjwFGLnKvxddz57Ojino59e8dXNOAJPeyAn8c5OkDIE5bRoXiZvWFTL3Ir9p3Ih4Gn6mqTgT2LJdTFcxd8qbbbAbSWN/ppzjeI/vSqf7Hp37GwZiNpYyCQuBWEQ0lVoRm9V99IhLAfDQIDAQAB";
+	// public static final String FAIRKET_APP_PUB_KEY =
+	// "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy5m7I8+f4O+9G0d8QVITG79fJzWoEFcu5IQtLlLwbv82d5dVvs6dbWigTLgr2Z6LdydoLTEaoWFAm+6oiMrcnEELfUh0hhQGZ7ACntA0+ogcEBKJaCWV9LouwLHRj6M1a9Ig/O40irDrq6G/+p7ZKnG5xhZuElSqMXR8cgIf2QNko6bjMGgo97wt0YKaoyNalK/HpcgSyUVjwFGLnKvxddz57Ojino59e8dXNOAJPeyAn8c5OkDIE5bRoXiZvWFTL3Ir9p3Ih4Gn6mqTgT2LJdTFcxd8qbbbAbSWN/ppzjeI/vSqf7Hp37GwZiNpYyCQuBWEQ0lVoRm9V99IhLAfDQIDAQAB";
 	// Prod server key
 	public static final String FAIRKET_APP_PUB_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhbrBvLv0jObVMp5gojh3Pz95L15SAo3Va0xD+gT+Q4G2f3O13TY7b5XpQUw8QmIGt/UWg0tMDr/VeG8qOpBcIzbpp4brYrhvNnycnVL5+Q4nrcfN4VNaiXHJF88za4rcHWfyXh40DwQ0PZEq6TruCVaP7zpHvk2ymMud9n4y4kYF0sR/Rv/1VV+Sv7XWVceM/bVw7TIazzUJHgmRSFYBXauJ5XHD4i59tG6s8TsLF6ZxiCQlVEQ7frvGBJBsh28gj+jwXpnYFIfaQo7+l0kwCBh/vsOkITj8cBGoqlyg28uKBXI+/UXVMi8vUFos06lp4qida/2PmjqRXP+sqpzE7QIDAQAB";
-	
+
 	private FairketApiClient mFairket;
 
 	public static final int MENU_ITEM_ADD = Menu.FIRST;
@@ -100,7 +103,12 @@ public class FolderListActivity extends ListActivity {
 
 	private Button mBtnRemoveAds;
 
-	private Button mBtnAdsHere;
+	// private Button mBtnAdsHere;
+
+	private InterstitialAd interstitial;
+
+	private AdView mAdView;
+	private boolean isFairketFreePlan;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +116,7 @@ public class FolderListActivity extends ListActivity {
 
 		setContentView(R.layout.folder_list);
 		mBtnRemoveAds = (Button) findViewById(R.id.btnRemoveAds);
-		mBtnAdsHere = (Button) findViewById(R.id.btnAdsHere);
+		// mBtnAdsHere = (Button) findViewById(R.id.btnAdsHere);
 
 		setDefaultKeyMode(DEFAULT_KEYS_SHORTCUT);
 		// Inform the list we provide context menus for items
@@ -157,6 +165,29 @@ public class FolderListActivity extends ListActivity {
 				FolderListActivity.FAIRKET_APP_PUB_KEY,
 				FolderListActivity.FAIRKET_LOG);
 
+		// Look up the AdView as a resource and load a request.
+		mAdView = (AdView) this.findViewById(R.id.adView);
+		AdRequest adRequest = new AdRequest.Builder().build();
+		mAdView.loadAd(adRequest);
+
+		// Create the interstitial.
+		interstitial = new InterstitialAd(this);
+		interstitial.setAdUnitId("ca-app-pub-6299089167657957/2573058620");
+
+		// Create ad request.
+		adRequest = new AdRequest.Builder().build();
+
+		// Begin loading your interstitial.
+		interstitial.loadAd(adRequest);
+
+	}
+
+	// Invoke displayInterstitial() when you are ready to display an
+	// interstitial.
+	public void displayInterstitial() {
+		if (interstitial.isLoaded()) {
+			interstitial.show();
+		}
 	}
 
 	@Override
@@ -194,11 +225,13 @@ public class FolderListActivity extends ListActivity {
 								+ result.isSuccess());
 						int visibility;
 						if (result.isSuccess()) {
+							isFairketFreePlan = true;
 							visibility = View.VISIBLE;
 						} else {
+							isFairketFreePlan = false;
 							visibility = View.GONE;
 						}
-						mBtnAdsHere.setVisibility(visibility);
+						mAdView.setVisibility(visibility);
 						mBtnRemoveAds.setVisibility(visibility);
 					}
 				});
@@ -218,6 +251,10 @@ public class FolderListActivity extends ListActivity {
 		mFolderListBinder.destroy();
 
 		FairketAppTimeHelper.onDestroy(mFairket);
+
+		if (isFairketFreePlan) {
+			displayInterstitial();
+		}
 
 	}
 
