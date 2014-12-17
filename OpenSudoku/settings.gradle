@@ -4,3 +4,6 @@ include ":BhulokCommonSDK"
 project(":BhulokCommonSDK").projectDir=file("../../../bhulok/bl_android_app_kitty/BhulokCommonSDK/")
 include ":ConfigHandler"
 project(":ConfigHandler").projectDir=file("../../../bhulok/bl_android_commons/ConfigHandler")
+include ":fairket-library"
+project(":fairket-library").projectDir=file("../../android-sdk/fairket-library")
+

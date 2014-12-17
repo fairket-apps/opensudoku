@@ -51,6 +51,7 @@ import com.fairket.sdk.android.FairketResult;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.tapjoy.TapjoyConnect;
 
 import cz.romario.opensudoku.db.FolderColumns;
 import cz.romario.opensudoku.db.SudokuDatabase;
@@ -69,10 +70,10 @@ public class FolderListActivity extends ListActivity {
 	public static final String FAIRKET_LOG = "SUDOKU-FairketApiClient";
 
 	// Dev server key
-	// public static final String FAIRKET_APP_PUB_KEY =
-	// "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy5m7I8+f4O+9G0d8QVITG79fJzWoEFcu5IQtLlLwbv82d5dVvs6dbWigTLgr2Z6LdydoLTEaoWFAm+6oiMrcnEELfUh0hhQGZ7ACntA0+ogcEBKJaCWV9LouwLHRj6M1a9Ig/O40irDrq6G/+p7ZKnG5xhZuElSqMXR8cgIf2QNko6bjMGgo97wt0YKaoyNalK/HpcgSyUVjwFGLnKvxddz57Ojino59e8dXNOAJPeyAn8c5OkDIE5bRoXiZvWFTL3Ir9p3Ih4Gn6mqTgT2LJdTFcxd8qbbbAbSWN/ppzjeI/vSqf7Hp37GwZiNpYyCQuBWEQ0lVoRm9V99IhLAfDQIDAQAB";
+	 public static final String FAIRKET_APP_PUB_KEY =
+	 "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy5m7I8+f4O+9G0d8QVITG79fJzWoEFcu5IQtLlLwbv82d5dVvs6dbWigTLgr2Z6LdydoLTEaoWFAm+6oiMrcnEELfUh0hhQGZ7ACntA0+ogcEBKJaCWV9LouwLHRj6M1a9Ig/O40irDrq6G/+p7ZKnG5xhZuElSqMXR8cgIf2QNko6bjMGgo97wt0YKaoyNalK/HpcgSyUVjwFGLnKvxddz57Ojino59e8dXNOAJPeyAn8c5OkDIE5bRoXiZvWFTL3Ir9p3Ih4Gn6mqTgT2LJdTFcxd8qbbbAbSWN/ppzjeI/vSqf7Hp37GwZiNpYyCQuBWEQ0lVoRm9V99IhLAfDQIDAQAB";
 	// Prod server key
-	public static final String FAIRKET_APP_PUB_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhbrBvLv0jObVMp5gojh3Pz95L15SAo3Va0xD+gT+Q4G2f3O13TY7b5XpQUw8QmIGt/UWg0tMDr/VeG8qOpBcIzbpp4brYrhvNnycnVL5+Q4nrcfN4VNaiXHJF88za4rcHWfyXh40DwQ0PZEq6TruCVaP7zpHvk2ymMud9n4y4kYF0sR/Rv/1VV+Sv7XWVceM/bVw7TIazzUJHgmRSFYBXauJ5XHD4i59tG6s8TsLF6ZxiCQlVEQ7frvGBJBsh28gj+jwXpnYFIfaQo7+l0kwCBh/vsOkITj8cBGoqlyg28uKBXI+/UXVMi8vUFos06lp4qida/2PmjqRXP+sqpzE7QIDAQAB";
+//	public static final String FAIRKET_APP_PUB_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhbrBvLv0jObVMp5gojh3Pz95L15SAo3Va0xD+gT+Q4G2f3O13TY7b5XpQUw8QmIGt/UWg0tMDr/VeG8qOpBcIzbpp4brYrhvNnycnVL5+Q4nrcfN4VNaiXHJF88za4rcHWfyXh40DwQ0PZEq6TruCVaP7zpHvk2ymMud9n4y4kYF0sR/Rv/1VV+Sv7XWVceM/bVw7TIazzUJHgmRSFYBXauJ5XHD4i59tG6s8TsLF6ZxiCQlVEQ7frvGBJBsh28gj+jwXpnYFIfaQo7+l0kwCBh/vsOkITj8cBGoqlyg28uKBXI+/UXVMi8vUFos06lp4qida/2PmjqRXP+sqpzE7QIDAQAB";
 
 	private FairketApiClient mFairket;
 
@@ -180,6 +181,11 @@ public class FolderListActivity extends ListActivity {
 		// Begin loading your interstitial.
 		interstitial.loadAd(adRequest);
 
+		// Tapjoy connect
+		String tapjoyAppID = "6d0adcda-a592-4dd0-b97b-733aaa313e2d";
+		String tapjoySecretKey = "zfeaQ9qz7gcUedicUG0D";
+		TapjoyConnect.requestTapjoyConnect(this, tapjoyAppID, tapjoySecretKey);
+
 	}
 
 	// Invoke displayInterstitial() when you are ready to display an
@@ -208,7 +214,9 @@ public class FolderListActivity extends ListActivity {
 
 					@Override
 					public void onInitializeFinished(FairketResult result) {
-						fairketChkForFreePlan();
+						if (result.isSuccess()) {
+							fairketChkForFreePlan();
+						}
 					}
 
 				});
